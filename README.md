@@ -1,1 +1,1 @@
-This is web development project ny Vibhanshu Jain and Nazish Kaunain
+This is web development project by Vibhanshu Jain and Nazish Kaunain
