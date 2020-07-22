@@ -1,23 +1,35 @@
 const express = require("express");
 const path = require("path");
 
-const getUserControllers = require(path.join(__dirname, "..", "controllers", "user", "get.js"));
-const postUserControllers = require(path.join(__dirname, "..", "controllers", "user", "post.js"));
+const userControllers = require(path.join(__dirname, "..", "controllers", "user.js"));
+
 
 const router = express.Router();
 
+//It has been arranged according to the alphabetical order of the name of the routes
 
-//the route page opens the login page
-router.get("/",getUserControllers.getLogin );
 
-router.get("/sign-up",getUserControllers.getSignUp );
+//it opens the home page where the details of the web application is given
+//like what can you do in the web-site
+//how it is helpful for the students
+router.get("/", userControllers.getHome);
 
-router.post("/sign-up", postUserControllers.postSignUp);
+//it opens the index page where user actually gets to use the web application
+//with all the functionalities available
+router.get("/index", userControllers.getIndex);
 
-router.post("/login", postUserControllers.postLogin);
+router.ger("/login", userControllers.getLogin);
 
-router.get("/home",getUserControllers.getHome);
+router.post("/login", userControllers.postLogin);
 
-router.get("/build-profile",getUserControllers.getBuildProfile);
+router.get("/sign-up", userControllers.getSignUp );
+
+router.post("/sign-up", userControllers.postSignUp);
+
+
+
+
+
+router.get("/build-profile", userControllers.getBuildProfile);
 
 module.exports = router;
