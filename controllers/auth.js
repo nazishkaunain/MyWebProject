@@ -3,7 +3,18 @@ const path = require('path');
 
 const bcrypt = require("bcryptjs");
 
-const User = require(path.join(__dirname,"..","models", "user.js"));
+const nodemailer = require("nodemailer");
+
+const sendgridTransport = require("nodemailer-sendgrid-transport");
+
+
+const User = require(path.join(__dirname, "..", "models", "user.js"));
+
+const transporter = nodemailer.createTransport(sendgridTransport({
+  auth: {
+    api_key: "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"
+  }
+}));
 
 exports.getLogin = (req, res, next) => {
 
@@ -17,7 +28,8 @@ exports.getLogin = (req, res, next) => {
   //console.log(req.session.isLoggedIn);
   res.render("auth/login", {
     pageTitle: "Login",
-    errorMessage: message
+    errorMessage: message,
+    path : "/login"
 
     //path: '/login'
   });
@@ -82,7 +94,8 @@ exports.getSignup = (req, res, next) => {
 
   res.render("auth/signup", {
     pageTitle: "Signup",
-    errorMessage: message
+    errorMessage: message,
+    path: "/signup"
   });
 };
 
@@ -116,6 +129,19 @@ exports.postSignup = (req, res, next) => {
         })
         .then(result => {
           res.redirect("/login");
+          //to send the confirmation mail
+          return transporter.sendMail({ ///you can alse return transporter.sendMail.... if you want to redirect to the login
+            // only after the mail has been sent
+            to: email,
+            from: "kaunainnazish@gmail.com",
+            subject: "Signup succeeded",
+            //html contains the message you wanna send
+            html: "<h1>You successfully signed up!!</h1>"
+          });
+
+        })
+        .catch((err) => {
+          console.log(err);
         });
     })
     .catch(err => {

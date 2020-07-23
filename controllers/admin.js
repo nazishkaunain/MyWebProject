@@ -1,5 +1,4 @@
 const path = require("path");
-const { useReducer } = require("react");
 const User = require(path.join(__dirname, "..", "models", "users.js"));
 
 exports.getLogin = (req, res, next) => {

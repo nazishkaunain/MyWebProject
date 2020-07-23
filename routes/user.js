@@ -18,6 +18,6 @@ router.get("/", userControllers.getHome);
 //with all the functionalities available
 router.get("/index", userControllers.getIndex);
 
-router.get("/build-profile", userControllers.getBuildProfile);
+// router.get("/build-profile", userControllers.getBuildProfile);
 
 module.exports = router;

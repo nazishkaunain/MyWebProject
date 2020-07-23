@@ -8,7 +8,7 @@ const mongoDBStore = require("connect-mongodb-session")(session);
 const csrf = require('csurf');
 const flash = require("connect-flash");
 
-//const userRoutes = require(path.join(__dirname, "routes", "user"));
+const userRoutes = require(path.join(__dirname, "routes", "user"));
 //const adminRoutes = require(path.join(__dirname, "routes", "admin"));
 const authRoutes = require(path.join(__dirname, "routes", "auth"));
 
@@ -66,7 +66,7 @@ app.use((req, res, next) => {
 });
 
 app.use(authRoutes);
-//app.use(userRoutes);
+app.use(userRoutes);
 //app.use("/admin",adminRoutes);
 
 app.use("/", (req, res, next) => {
