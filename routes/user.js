@@ -18,18 +18,6 @@ router.get("/", userControllers.getHome);
 //with all the functionalities available
 router.get("/index", userControllers.getIndex);
 
-router.ger("/login", userControllers.getLogin);
-
-router.post("/login", userControllers.postLogin);
-
-router.get("/sign-up", userControllers.getSignUp );
-
-router.post("/sign-up", userControllers.postSignUp);
-
-
-
-
-
 router.get("/build-profile", userControllers.getBuildProfile);
 
 module.exports = router;

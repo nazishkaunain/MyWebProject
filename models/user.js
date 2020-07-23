@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { mongo } = require("mongoose");
 
 const Schema = mongoose.Schema;
 
@@ -12,31 +11,35 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    password: {
+        type: String,
+        required: true
+    },
     DOB: {
         date: {
             type: String,
-            required: true
+            //required: true
         },
         month: {
             type: String,
-            required: true
+            //required: true
         },
         year: {
             type: String,
-            required: true
+            //required: true
         }
     },
     gender: {
         type: String,
-        required: true
+        //required: true
     },
     department: {
         type: String,
-        required: true
+        //required: true
     },
     yearOfGraduation: {
         type: Number,
-        required: true
+        //required: true
     },
     //the courses enrolled in by the user
     courses: [
@@ -44,7 +47,7 @@ const userSchema = new Schema({
             course: {
                 type: Schema.Types.ObjectId,
                 ref: "Course",
-                required: true
+                //required: true
             }
         }
     ]
