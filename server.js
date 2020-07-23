@@ -7,6 +7,7 @@ const session = require("express-session");
 const mongoDBStore = require("connect-mongodb-session")(session);
 const csrf = require('csurf');
 const flash = require("connect-flash");
+const env = require("dotenv").config();
 
 const userRoutes = require(path.join(__dirname, "routes", "user"));
 //const adminRoutes = require(path.join(__dirname, "routes", "admin"));
@@ -34,7 +35,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.use(session({
-  secret: "mySecret", //put it in .env file
+  secret: process.env.SECRET, //put it in .env file
   resave: false,
   saveUninitialised: false,
   store: store //it connects session to mongdb store
