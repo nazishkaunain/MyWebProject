@@ -1,0 +1,28 @@
+<ul class="nav nav-pills">
+    <% if(isAuthenticated) { %>
+      <li class="nav-item">
+        <form class="" action="/logout" method="post">
+          <!-- it is important to name the input as _csrf and you have to add it in every single form -->
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button type="submit" name="button">Logout</button>
+        </form>
+      </li>
+      <% } %>
+      <% if(!isAuthenticated) { %>
+
+        <!-- if the user is already in the login page -->
+        <% if(path !== "/login") { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+        <% } %>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="/signup">Signup</a>
+        </li>
+
+      <% } %>
+
+
+  </ul>
+  </header>
