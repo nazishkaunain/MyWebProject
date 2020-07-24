@@ -24,30 +24,23 @@ const userSchema = new Schema({
     profilePhoto: {
       type: String
     },
-    DOB: {
-        date: {
-            type: String,
-            //required: true
-        },
-        month: {
-            type: String,
-            //required: true
-        },
-        year: {
-            type: String,
-            //required: true
-        }
+    birthday: {    ///m.date = Date('2013-12-31');
+        type: Date,
+        max: Date('2014-01-01')
+    },
+    degree: {
+        type: String
     },
     gender: {
-        type: String,
+        type: String
         //required: true
     },
     department: {
-        type: String,
+        type: String
         //required: true
     },
     yearOfGraduation: {
-        type: Number,
+        type: Number
         //required: true
     },
     //the courses enrolled in by the user

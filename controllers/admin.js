@@ -27,3 +27,7 @@ exports.getUsers = (req, res, next) => {
             console.log(err);
         });
 };
+
+exports.getAddCourse = (req, res, next) => {
+    
+}
