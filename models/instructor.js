@@ -13,14 +13,14 @@ const instructorSchema = new Schema({
             course: {
                 type: Schema.Types.ObjectId,
                 ref: "Course",
-                required: true
+                //required: true
             }
         }
     ],
     //general opinion formed by the past students who enrolled for any of his courses
     opinion: {
         type: String,
-        required: true
+        //required: true
     }
 });
 

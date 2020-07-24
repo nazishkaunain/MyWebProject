@@ -14,8 +14,10 @@ const courseSchema = new Schema({
   },
   //name of the current instructor
   instructor: {
-    type: Schema.Types.ObjectId,
-    ref: "Instructor",
+    // type: Schema.Types.ObjectId,
+    // ref: "Instructor",
+    // required: true
+    type: String,
     required: true
   },
   //history of this course like the name of the instructor, the cousrse-code and the year when it was taught
@@ -23,16 +25,16 @@ const courseSchema = new Schema({
     {
       year: {
         type: Number,
-        required: true
+        //required: true
       },
       courseCode: {
         type: String,
-        required: true
+        //required: true
       },
       instructor: {
         type: Schema.Types.ObjectId,
         ref: "Instructor",
-        required: true
+        //required: true
       }
     }
   ],
@@ -42,7 +44,7 @@ const courseSchema = new Schema({
       user: {
         type: Schema.Types.ObjectId,
         ref: "User",
-        required: true
+        //required: true
       }
     }
   ]

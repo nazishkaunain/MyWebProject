@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %></title>
+</head>
+
+
+<body>
+
+              <p class="">Add course</p>
+
+              <form action="/admin/add-instructor" method="POST">
+                
+                    <label for="name">Name of the Instructor</label>
+                    <input type="text" name="name" id="name"  placeholder="Name of the Instructor">
+     
+
+
+     
+                    <label for="opinion" class="sr-only">Opinion</label>
+                    <input type="text" name="opinion" id="opinion" class="form-control" placeholder="Opinion">
+            
+<!--    
+                    <label for="instructor" class="sr-only">Name of the instructor</label>
+                    <input type="text" name="instructor" id="instructor" class="form-control" placeholder="Name of the instructor"> -->
+
+        
+
+              
+
+
+				  <!-- Check these two files Upon the login button we needed -->
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="btn btn-block login-btn mb-4" type="submit">
+                    Add Instructor
+                </button>
+                  <!-- <input name="login" id="login" class="btn btn-block login-btn mb-4" type="button" type="submit" value="Login"> -->
+
+</body>
+
+<%- include("../partials/footer.ejs") -%>

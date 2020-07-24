@@ -10,7 +10,7 @@ const flash = require("connect-flash");
 const env = require("dotenv").config();
 
 const userRoutes = require(path.join(__dirname, "routes", "user"));
-//const adminRoutes = require(path.join(__dirname, "routes", "admin"));
+const adminRoutes = require(path.join(__dirname, "routes", "admin"));
 const authRoutes = require(path.join(__dirname, "routes", "auth"));
 
 const User = require(path.join(__dirname, "models", "user"));
@@ -68,7 +68,7 @@ app.use((req, res, next) => {
 
 app.use(authRoutes);
 app.use(userRoutes);
-//app.use("/admin",adminRoutes);
+app.use("/admin",adminRoutes);
 
 app.use("/", (req, res, next) => {
   //render Error page

@@ -3,6 +3,8 @@ const path = require("path");
 
 const userControllers = require(path.join(__dirname, "..", "controllers", "user.js"));
 
+const isAuth = require(path.join(__dirname, "..", "middleware", "is-auth.js"));
+
 
 const router = express.Router();
 
@@ -16,10 +18,10 @@ router.get("/", userControllers.getHome);
 
 //it opens the index page where user actually gets to use the web application
 //with all the functionalities available
-router.get("/index", userControllers.getIndex);
+router.get("/index", isAuth,  userControllers.getIndex);
 
-router.get("/build-profile", userControllers.getBuildProfile);
+router.get("/build-profile", isAuth, userControllers.getBuildProfile);
 
-router.post("/build-profile", userControllers.postBuildProfile);
+router.post("/build-profile",isAuth,  userControllers.postBuildProfile);
 
 module.exports = router;
