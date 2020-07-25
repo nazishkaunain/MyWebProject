@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const courseSchema = new Schema({
+  //_id: Schema.Types.ObjectId,
   name: {
     type: String,
     required: true
@@ -14,10 +15,8 @@ const courseSchema = new Schema({
   },
   //name of the current instructor
   instructor: {
-    // type: Schema.Types.ObjectId,
-    // ref: "Instructor",
-    // required: true
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "Instructor",
     required: true
   },
   //history of this course like the name of the instructor, the cousrse-code and the year when it was taught
@@ -41,11 +40,9 @@ const courseSchema = new Schema({
   //the array of users who enrolled for this course
   users: [
     {
-      user: {
         type: Schema.Types.ObjectId,
         ref: "User",
         //required: true
-      }
     }
   ]
 });

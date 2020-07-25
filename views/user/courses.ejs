@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %></title>
+</head>
+
+
+<body>
+
+              <p class="">Courses</p>
+
+    
+                <% courses.map(course => { %>
+                    <h1>Name of the Course: <%= course.name %></h1>
+
+                    <h1>courseCode: <%= course.courseCode %></h1>
+
+                    <h1>instructor: <%= course.instructor.name %></h1>
+                    <form action="/follow-courses" method="POST">
+                        <input type="hidden" name="courseId" value="<%= course._id %>">
+        
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button class="btn btn-block login-btn mb-4" type="submit">
+                            Follow course
+                        </button>
+                    </form>
+                    
+
+                <% }); %>
+            
+         
+
+     
+            
+   
+               <!-- <input name="login" id="login" class="btn btn-block login-btn mb-4" type="button" type="submit" value="Login"> -->
+
+</body>
+
+<%- include("../partials/footer.ejs") -%>

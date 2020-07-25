@@ -46,11 +46,10 @@ const userSchema = new Schema({
     //the courses enrolled in by the user
     courses: [
         {
-            course: {
                 type: Schema.Types.ObjectId,
                 ref: "Course",
                 //required: true
-            }
+
         }
     ]
 });

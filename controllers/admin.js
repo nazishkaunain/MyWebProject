@@ -1,10 +1,13 @@
 const path = require("path");
-const instructor = require("../models/instructor");
+
+//const mongoose = require("mongoose");
+
 const User = require(path.join(__dirname, "..", "models", "user.js"));
 
 const Course = require(path.join(__dirname, "..", "models", "course.js"));
 
 const Instructor = require(path.join(__dirname, "..", "models", "instructor.js"));
+
 
 // exports.getLogin = (req, res, next) => {
 //     res.render("admin/admin-login", { pageTitle: "Login Admin" });
@@ -34,16 +37,35 @@ const Instructor = require(path.join(__dirname, "..", "models", "instructor.js")
 // };
 
 exports.getAddCourse = (req, res, next) => {
-    res.render("admin/add-course", {
-        pageTitle: "Add Course",
-        path: "/admin/add-course"
-    });
+    Instructor.find()
+        .then(instructors => {
+            return res.render("admin/add-course", {
+                pageTitle: "Add Course",
+                path: "/admin/add-course",
+                instructors: instructors
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    
 };
  
 exports.postAddCourse = (req, res, next) => {
     const name = req.body.name;
     const courseCode = req.body.courseCode;
-    const instructor = req.body.instructor;
+
+    //console.log(req.body.instructor);
+    const instructor = req.body.instructor; //getting the id of the instructor
+    //{...product.productId._doc}
+
+    
+
+    // console.log(typeof instruct); // it is a string
+    // console.log("instructor", instructor);
+    // console.log("name",instructor.name);
+    
+
 
     const course = new Course({
         name: name,
@@ -53,6 +75,16 @@ exports.postAddCourse = (req, res, next) => {
 
     course.save()
         .then(result => {
+            Instructor.findById(instructor)
+                .then(instructor => {
+                    instructor.courses.push(course._id);
+                    return instructor.save();
+                })
+                .catch(err => {
+                    console.log(err);
+                }); 
+        })
+        .then(() => {
             return res.redirect("/index");
         })
         .catch(err => {
@@ -73,12 +105,76 @@ exports.postAddInstructor = (req, res, next) => {
     const opinion = req.body.opinion;
 
     const instructor = new Instructor({
+        //_id: new mongoose.Types.ObjectId(),
         name: name,
-        opinion: opinion
+        opinion: opinion,
+        courses: []
     });
     instructor.save()
         .then(result => {
             return res.redirect("/index");
+        })
+        .catch(err => {
+            console.log(err);
+        })
+};
+
+exports.getCourses = (req, res, next) => {
+
+    // Course.
+    //     find({}).
+    //     populate('instructor').
+    //     exec((err, courses) => {
+    //         if (err) return console.log(err);
+    //         else {
+    //             console.log(courses);
+    //             courses.map(course => {
+    //                 console.log(course.instructor.courses);
+    //             });
+    //             //console.log(story.instructor.courses);
+    //             //console.log('The author is %s', story.author.name);
+    //         }
+    //         // prints "The author is Ian Fleming"
+    //     });
+    
+    Course.
+        find({}).
+        populate('instructor').
+        exec().
+        then(courses => {
+            console.log(courses);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+
+    // Course.find()
+    //     .then(courses => {
+    //         courses.map(course => {
+    //             console.log(course);
+    //             Instructor.findById(course.instructor)
+    //                 .then(instructor => {
+    //                     console.log(instructor);
+    //                 })
+    //                 .catch(err => {
+    //                     console.log(err);
+    //                 })
+    //         });
+    //     })
+    //     .catch(err => {
+    //         console.log(err);
+    //     })
+};
+exports.getInstructors = (req, res, next) => {
+    // Instructor.findOne().populate('courses').exec((err, instructors) => {
+    //     console.log(instructors.courses);
+    // });
+    Instructor
+        .find()
+        .populate('courses')
+        .exec()
+        .then(instructors => {
+            console.log(instructors);
         })
         .catch(err => {
             console.log(err);

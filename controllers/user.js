@@ -1,6 +1,11 @@
 const path = require("path");
+const course = require("../models/course");
 
 const User = require(path.join(__dirname, "..", "models", "user.js"));
+
+const Course = require(path.join(__dirname, "..", "models", "course.js"));
+
+const Instructor = require(path.join(__dirname, "..", "models", "instructor.js"));
 
 exports.getHome = (req, res, next) => {
     res.render("user/home", {
@@ -54,4 +59,38 @@ exports.postBuildProfile = (req, res, next) => {
         });
     
 };
+
+exports.getCourses = (req, res, next) => {
+    Course
+        .find()
+        .populate('instructor')
+        .exec()
+        .then(courses => {
+            res.render("user/courses", {
+                pageTitle: "courses",
+                path: "/admin/get-courses",
+                courses: courses
+            })
+        })
+    
+}
+
+exports.followCourses = (req, res, next) => {
+    console.log(req.body);
+    console.log(req.user);
+
+    req.user.courses.push(req.body.courseId);
+    req.user.save()
+        .then(result => {
+            Course.findById(req.body.courseId)
+                .then(course => {
+                    course.users.push(req.user._id);
+                    return course.save();
+                })
+            return res.redirect("/get-courses");
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
 

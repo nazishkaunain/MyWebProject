@@ -24,8 +24,12 @@
                     <input type="text" name="courseCode" id="courseCode" class="form-control" placeholder="Code course">
             
    
-                    <label for="instructor" class="sr-only">Name of the instructor</label>
-                    <input type="text" name="instructor" id="instructor" class="form-control" placeholder="Name of the instructor">
+                    <label for="instructor">Name of the instructor: </label>
+                    <select id="instructor" name="instructor">
+                        <% instructors.map(instructor => { %>
+                            <option value="<%= instructor._id %>"><%= instructor.name %></option>
+                        <% }); %>
+                    </select>
 
         
 

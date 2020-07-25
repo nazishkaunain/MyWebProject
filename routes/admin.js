@@ -30,4 +30,10 @@ router.get("/add-instructor", isAuth, adminControllers.getAddInstructor);
 
 router.post("/add-instructor", isAuth, adminControllers.postAddInstructor);
 
+router.get("/courses", isAuth, adminControllers.getCourses);
+
+router.get("/instructors", isAuth, adminControllers.getInstructors);
+
+
+
 module.exports = router;

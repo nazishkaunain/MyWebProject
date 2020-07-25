@@ -22,6 +22,10 @@ router.get("/index", isAuth,  userControllers.getIndex);
 
 router.get("/build-profile", isAuth, userControllers.getBuildProfile);
 
-router.post("/build-profile",isAuth,  userControllers.postBuildProfile);
+router.post("/build-profile", isAuth, userControllers.postBuildProfile);
+
+router.get("/get-courses", isAuth, userControllers.getCourses);
+
+router.post("/follow-courses", isAuth, userControllers.followCourses);
 
 module.exports = router;

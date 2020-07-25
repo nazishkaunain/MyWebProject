@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const instructorSchema = new Schema({
+    //_id: Schema.Types.ObjectId,
     name: {
         type: String,
         required: true
@@ -10,17 +11,15 @@ const instructorSchema = new Schema({
     //the array of the courses offered by the instructor
     courses: [
         {
-            course: {
                 type: Schema.Types.ObjectId,
                 ref: "Course",
-                //required: true
-            }
+                required: true
         }
     ],
     //general opinion formed by the past students who enrolled for any of his courses
     opinion: {
         type: String,
-        //required: true
+        required: true
     }
 });
 
