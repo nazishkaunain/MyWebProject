@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const { runInContext } = require("vm");
 
 const router = express.Router();
 
@@ -13,11 +14,15 @@ const isAuth = require(path.join(__dirname, "..", "middleware", "is-auth.js"));
 //it will direct the user to the home page for the admin
 // router.get("/home", adminControllers.getAdminHome);
 
-// //admin/login => GET
-// router.get("/login",getAdminControllers.getLogin);
+//admin/login => GET
+router.get("/login",  adminControllers.getLogin);
 
-// //admin/login => POST
-// router.post("/login", postAdminControllers.postLogin);
+//admin/login => POST
+router.post("/login", adminControllers.postLogin);
+
+router.get("/signup", adminControllers.getSignup);
+
+router.post("/signup", adminControllers.postSignup);
 
 // //admin/users => GET
 // router.get("/users",getAdminControllers.getUsers);

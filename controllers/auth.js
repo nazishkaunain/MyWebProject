@@ -33,7 +33,6 @@ exports.getLogin = (req, res, next) => {
     errorMessage: message,
     path : "/login"
 
-    //path: '/login'
   });
 };
 
@@ -122,10 +121,9 @@ exports.postSignup = (req, res, next) => {
         .hash(password, 12)
         .then(hashedPassword => {
             const newUser = new User({
-            name: name,
-            email: email,
-            password: hashedPassword,
-            cart: { items: []} //creating the empty cart
+              name: name,
+              email: email,
+              password: hashedPassword,
           });
           return newUser.save();
         })
