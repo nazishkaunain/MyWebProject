@@ -26,6 +26,12 @@ router.post("/build-profile", isAuth, userControllers.postBuildProfile);
 
 router.get("/get-courses", isAuth, userControllers.getCourses);
 
+router.get("/get-instructors", isAuth, userControllers.getInstructors);
+
 router.post("/follow-courses", isAuth, userControllers.followCourses);
+
+router.get("/get-my-courses", isAuth, userControllers.getMyCourses);
+
+router.post("/unfollow-course", isAuth, userControllers.unfollowCourse);
 
 module.exports = router;

@@ -66,18 +66,37 @@ exports.getCourses = (req, res, next) => {
         .populate('instructor')
         .exec()
         .then(courses => {
+            console.log(courses);
             res.render("user/courses", {
                 pageTitle: "courses",
-                path: "/admin/get-courses",
+                path: "/get-courses",
                 courses: courses
             })
         })
     
 }
 
+exports.getInstructors = (req, res, next) => {
+ 
+    Instructor.find()
+        .populate("courses")
+        .exec()
+        .then((instructors) => {
+            console.log(instructors);
+            res.render("user/instructors", {
+                pageTitle: "Instructors",
+                path: "/get-instructors",
+                instructors: instructors
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
+
 exports.followCourses = (req, res, next) => {
-    console.log(req.body);
-    console.log(req.user);
+    //console.log(req.body);
+    //console.log(req.user);
 
     req.user.courses.push(req.body.courseId);
     req.user.save()
@@ -87,10 +106,49 @@ exports.followCourses = (req, res, next) => {
                     course.users.push(req.user._id);
                     return course.save();
                 })
-            return res.redirect("/get-courses");
+            return res.redirect("/get-my-courses");
         })
         .catch(err => {
             console.log(err);
         });
-}
+};
+
+exports.getMyCourses = (req, res, next) => {
+    //req.user just behaves like User but you don't need to use findById here
+    req.user
+        .populate({ path: "courses", populate: { path: "instructor" } })
+        .execPopulate()   //when you are not using find() (or related functions) you use execPopulate() and not exec()
+        .then(user => {
+            return res.render("user/my-courses", {
+                pageTitle: "My Courses",
+                path: "/get-my-courses",
+                courses: user.courses
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
+exports.unfollowCourse = (req, res, next) => {
+    console.log(req.body.courseId);
+    req.user
+        .populate("courses")
+        .execPopulate()
+        .then(user => {
+            const updatedCourses = user.courses.filter(course => {
+                return course._id.toString() !== req.body.courseId;   //because the req.body.courseId is a string
+            });
+            user.courses = updatedCourses;
+            return user.save();
+        })
+        .then(result => {
+            return res.redirect("/get-my-courses");
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
+
 

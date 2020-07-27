@@ -1,16 +1,14 @@
 const path = require("path");
 
-const bcrypt = require("bcryptjs");
+// const bcrypt = require("bcryptjs");
 
-const crypto = require("crypto"); //inbuilt library provided by node.js
+// const crypto = require("crypto"); //inbuilt library provided by node.js
 
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
 
-const sendgridTransport = require("nodemailer-sendgrid-transport");
+// const sendgridTransport = require("nodemailer-sendgrid-transport");
 
 const User = require(path.join(__dirname, "..", "models", "user.js"));
-
-const Admin = require(path.join(__dirname, "..", "models", "admin.js"));
 
 const Course = require(path.join(__dirname, "..", "models", "course.js"));
 
@@ -21,136 +19,136 @@ const Instructor = require(path.join(
     "instructor.js"
 ));
 
-const transporter = nodemailer.createTransport(
-    sendgridTransport({
-        auth: {
-            api_key: process.env.API_KEY,
-        },
-    })
-);
+// const transporter = nodemailer.createTransport(
+//     sendgridTransport({
+//         auth: {
+//             api_key: process.env.API_KEY,
+//         },
+//     })
+// );
 
-exports.getLogin = (req, res, next) => {
-    let message = req.flash("error");
-    if (message.length > 0) {
-        message = message[0];
-    } else {
-        message = null;
-    }
-    res.render("admin/login", {
-        pageTitle: "Login Admin",
-        path: "/admin/login",
-        errorMessage: message,
-    });
-};
+// exports.getLogin = (req, res, next) => {
+//     let message = req.flash("error");
+//     if (message.length > 0) {
+//         message = message[0];
+//     } else {
+//         message = null;
+//     }
+//     res.render("admin/login", {
+//         pageTitle: "Login Admin",
+//         path: "/admin/login",
+//         errorMessage: message,
+//     });
+// };
 
-exports.postLogin = (req, res, next) => {
-    const email = req.body.email;
-    const password = req.body.password;
+// exports.postLogin = (req, res, next) => {
+//     const email = req.body.email;
+//     const password = req.body.password;
 
-    Admin.findOne({ email: email })
-        .then((user) => {
-            if (!user) {
-                req.flash("error", "Invalid email!");
-                return res.redirect("/admin/login");
-            }
-            return bcrypt
-                .compare(password, user.password)
-                .then((result) => {
-                    if (result) {
-                        req.session.isLoggedIn = true;
-                        req.session.user = user;
-                        //normally you don't need to call .save() but you can call it if you need
-                        //the guarantee that it redirects to "/" only after the session has been saved
-                        return req.session.save((err) => {
-                            if (!err) {
-                                console.log("Successfully logged in as the admin");
-                                res.redirect("/index");
-                            } else console.log(err);
-                        });
-                    }
-                    req.flash("error", "Invalid password!");
-                    res.redirect("/admin/login");
-                })
-                .catch((err) => {
-                    console.log(err);
-                    res.redirect("/admin/login");
-                });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-};
+//     Admin.findOne({ email: email })
+//         .then((user) => {
+//             if (!user) {
+//                 req.flash("error", "Invalid email!");
+//                 return res.redirect("/admin/login");
+//             }
+//             return bcrypt
+//                 .compare(password, user.password)
+//                 .then((result) => {
+//                     if (result) {
+//                         req.session.isLoggedIn = true;
+//                         req.session.user = user;
+//                         //normally you don't need to call .save() but you can call it if you need
+//                         //the guarantee that it redirects to "/" only after the session has been saved
+//                         return req.session.save((err) => {
+//                             if (!err) {
+//                                 console.log("Successfully logged in as the admin");
+//                                 res.redirect("/index");
+//                             } else console.log(err);
+//                         });
+//                     }
+//                     req.flash("error", "Invalid password!");
+//                     res.redirect("/admin/login");
+//                 })
+//                 .catch((err) => {
+//                     console.log(err);
+//                     res.redirect("/admin/login");
+//                 });
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         });
+// };
 
-exports.getSignup = (req, res, next) => {
-    let message = req.flash("error");
-    if (message.length > 0) {
-        message = message[0];
-    } else {
-        message = null;
-    }
+// exports.getSignup = (req, res, next) => {
+//     let message = req.flash("error");
+//     if (message.length > 0) {
+//         message = message[0];
+//     } else {
+//         message = null;
+//     }
 
-    res.render("admin/signup", {
-        pageTitle: "Signup as Admin",
-        errorMessage: message,
-        path: "/admin/signup",
-    });
-};
+//     res.render("admin/signup", {
+//         pageTitle: "Signup as Admin",
+//         errorMessage: message,
+//         path: "/admin/signup",
+//     });
+// };
 
-exports.postSignup = (req, res, next) => {
-    const secretKey = req.body.secretKey;
-    const name = req.body.name;
-    const email = req.body.email;
-    const password = req.body.password;
-    const confirmPassword = req.body.confirm - password;
+// exports.postSignup = (req, res, next) => {
+//     const secretKey = req.body.secretKey;
+//     const name = req.body.name;
+//     const email = req.body.email;
+//     const password = req.body.password;
+//     const confirmPassword = req.body.confirm - password;
 
-    Admin.findOne({ email: email })
-        .then((user) => {
-            if (user) {
-                req.flash("error", "This email is already used!");
-                return res.redirect("/admin/signup");
-            }
-            if (secretKey === process.env.ADMIN_SECRET) {
-                // it is important chain the bcrypt whole things because when the user with the email already exists
-                //it will return only the "/signup" page,
-                //.then behaves like a whole function
-                //ref: Adding a Tiny Code Improvement
-                //module: Authentication
-                return bcrypt
-                    .hash(password, 12)
-                    .then((hashedPassword) => {
-                        const newUser = new User({
-                            name: name,
-                            email: email,
-                            password: hashedPassword,
-                        });
-                        return newUser.save();
-                    })
-                    .then((result) => {
-                        res.redirect("/admin/login");
-                        //to send the confirmation mail
-                        return transporter.sendMail({
-                            ///you can alse return transporter.sendMail.... if you want to redirect to the login
-                            // only after the mail has been sent
-                            to: email,
-                            from: "kaunainnazish@gmail.com",
-                            subject: "Signup succeeded",
-                            //html contains the message you wanna send
-                            html: "<h1>You successfully signed up as the admin!!</h1>",
-                        });
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
+//     Admin.findOne({ email: email })
+//         .then((user) => {
+//             if (user) {
+//                 req.flash("error", "This email is already used!");
+//                 return res.redirect("/admin/signup");
+//             }
+//             if (secretKey === process.env.ADMIN_SECRET) {
+//                 // it is important chain the bcrypt whole things because when the user with the email already exists
+//                 //it will return only the "/signup" page,
+//                 //.then behaves like a whole function
+//                 //ref: Adding a Tiny Code Improvement
+//                 //module: Authentication
+//                 return bcrypt
+//                     .hash(password, 12)
+//                     .then((hashedPassword) => {
+//                         const newUser = new User({
+//                             name: name,
+//                             email: email,
+//                             password: hashedPassword,
+//                         });
+//                         return newUser.save();
+//                     })
+//                     .then((result) => {
+//                         res.redirect("/admin/login");
+//                         //to send the confirmation mail
+//                         return transporter.sendMail({
+//                             ///you can alse return transporter.sendMail.... if you want to redirect to the login
+//                             // only after the mail has been sent
+//                             to: email,
+//                             from: "kaunainnazish@gmail.com",
+//                             subject: "Signup succeeded",
+//                             //html contains the message you wanna send
+//                             html: "<h1>You successfully signed up as the admin!!</h1>",
+//                         });
+//                     })
+//                     .catch((err) => {
+//                         console.log(err);
+//                     });
 
-            } else {
-                req.flash("error", "Looks like you are not autorized to do so!!");
-                return res.redirect("/admin/signup");
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-};
+//             } else {
+//                 req.flash("error", "Looks like you are not autorized to do so!!");
+//                 return res.redirect("/admin/signup");
+//             }
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         });
+// };
 
 // exports.getHome = (req, res, next) => {
 //     res.render("admin/home", {
@@ -249,61 +247,4 @@ exports.postAddInstructor = (req, res, next) => {
         });
 };
 
-exports.getCourses = (req, res, next) => {
-    // Course.
-    //     find({}).
-    //     populate('instructor').
-    //     exec((err, courses) => {
-    //         if (err) return console.log(err);
-    //         else {
-    //             console.log(courses);
-    //             courses.map(course => {
-    //                 console.log(course.instructor.courses);
-    //             });
-    //             //console.log(story.instructor.courses);
-    //             //console.log('The author is %s', story.author.name);
-    //         }
-    //         // prints "The author is Ian Fleming"
-    //     });
 
-    Course.find({})
-        .populate("instructor")
-        .exec()
-        .then((courses) => {
-            console.log(courses);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-
-    // Course.find()
-    //     .then(courses => {
-    //         courses.map(course => {
-    //             console.log(course);
-    //             Instructor.findById(course.instructor)
-    //                 .then(instructor => {
-    //                     console.log(instructor);
-    //                 })
-    //                 .catch(err => {
-    //                     console.log(err);
-    //                 })
-    //         });
-    //     })
-    //     .catch(err => {
-    //         console.log(err);
-    //     })
-};
-exports.getInstructors = (req, res, next) => {
-    // Instructor.findOne().populate('courses').exec((err, instructors) => {
-    //     console.log(instructors.courses);
-    // });
-    Instructor.find()
-        .populate("courses")
-        .exec()
-        .then((instructors) => {
-            console.log(instructors);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-};

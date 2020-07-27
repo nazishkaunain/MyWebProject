@@ -10,7 +10,7 @@
 
 <body>
 
-              <p class="">Courses</p>
+              <p class="">My Courses</p>
 
     
                 <% courses.map(course => { %>
@@ -19,22 +19,14 @@
                     <h1>courseCode: <%= course.courseCode %></h1>
 
                     <h1>instructor: <%= course.instructor.name %></h1>
-                    <form action="/follow-courses" method="POST">
+                    <form action="/unfollow-course" method="POST">
                         <input type="hidden" name="courseId" value="<%= course._id %>">
         
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <button class="btn btn-block login-btn mb-4" type="submit">
-                            Follow course
+                            Unfollow course
                         </button>
                     </form>
-
-                    <% if(isAdmin) { %>
-                        <form action="/admin/edit-course" method="post">
-                            <input type="hidden" name="courseId" value="<%= course._id %>">
-                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                            <button type="submit">Edit Course</button> 
-                        </form>
-                    <% } %>
 
                 <% }); %>
 

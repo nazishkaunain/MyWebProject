@@ -14,28 +14,32 @@
 
           <% if(isAuthenticated) { %>
             <li><a href="/build-profile">Build Profile</a></li>
-            <li><a href="/admin/add-course">Add Course</a></li>
-            <li><a href="/admin/add-instructor">Add Instructor</a></li>
-            <li class="drop-down"><a href="">Batch</a>
-              <ul>
-                <li><a href="#">2019</a></li>
-                <li class="drop-down"><a href="#">Deep Drop Down</a>
-                  <ul>
-                    <li><a href="#">AI</a></li>
-                    <li><a href="#">CSE</a></li>
-                    <li><a href="#">MNC</a></li>
-                    <li><a href="#">Electrical</a></li>
-                    <li><a href="#">Mechanical</a></li>
-                  </ul>
-                </li>
-                <li><a href="#">2018</a></li>
-                <li><a href="#">2017</a></li>
-                <li><a href="#">2016</a></li>
-              </ul>
-            </li>
+            <li><a href="/get-my-courses">My Courses</a></li>
+            <li><a href="/get-courses">All Courses</a></li>
+            <li><a href="/get-instructors">All Instructors</a></li>
+            <% if(isAdmin) { %>
+              <li class="drop-down"><a href="">ADMIN</a>
+                <ul>
+                  <li><a href="#">2019</a></li>
+                  <li class="drop-down"><a href="#">Admin Operations</a>
+                    <ul>
+                      <li><a href="/admin/add-course">Add Course</a></li>
+                      <li><a href="/admin/add-instructor">Add Instructor</a></li>
+                      <li><a href="#">MNC</a></li>
+                      <li><a href="#">Electrical</a></li>
+                      <li><a href="#">Mechanical</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#">2018</a></li>
+                  <li><a href="#">2017</a></li>
+                  <li><a href="#">2016</a></li>
+                </ul>
+              </li>
+            <% } %>
+            
           <% } %>
 
-          <li><a href="#contact">Contact</a></li
+          <li><a href="#contact">Contact</a></li>
         </ul>
       </nav><!-- .nav-menu -->
       <% if(isAuthenticated) { %>
@@ -51,9 +55,11 @@
         <% if(path !== "/login") { %>
          <a href="/login" class="get-started-btn">Login</a>
         <% } %>
-        <a href="/signup" class="get-started-btn">Signup</a>
+        <% if(path !== "/signup") { %>
+          <a href="/signup" class="get-started-btn">Signup</a>
+        <% } %>
+        
       <% } %>
-
 
 
     </div>

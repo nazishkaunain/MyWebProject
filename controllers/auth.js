@@ -50,9 +50,15 @@ exports.postLogin = (req, res, next) => {
         return bcrypt
           .compare(password, user.password)
           .then(result => {
-            if(result) {
+            if (result) {
+              
+              
               req.session.isLoggedIn = true;
-              req.session.user= user;
+              req.session.isAdmin = user.isAdmin;
+              req.session.user = user;
+              
+              console.log(req.session);
+              console.log(user);
               //normally you don't need to call .save() but you can call it if you need
               //the guarantee that it redirects to "/" only after the session has been saved
               return req.session.save((err) => {
@@ -124,6 +130,7 @@ exports.postSignup = (req, res, next) => {
               name: name,
               email: email,
               password: hashedPassword,
+              isAdmin: false
           });
           return newUser.save();
         })
