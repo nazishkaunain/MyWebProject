@@ -70,7 +70,8 @@ exports.getCourses = (req, res, next) => {
             res.render("user/courses", {
                 pageTitle: "courses",
                 path: "/get-courses",
-                courses: courses
+                courses: courses,
+                userCourses: req.user.courses
             })
         })
     

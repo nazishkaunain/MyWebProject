@@ -16,7 +16,7 @@
                 <% instructors.map(instructor => { %>
                     <h1>Name of the Course: <%= instructor.name %></h1>
 
-                    <h1>courseCode: <%= instructor.opinion %></h1>
+                    <h1>Opinion about the instructor: <%= instructor.opinion %></h1>
 
                     <ul>
                         <% instructor.courses.map(course => { %>
@@ -26,12 +26,13 @@
 
 
                     <% if(isAdmin) { %>
-                        <form action="/admin/edit-instructor" method="post">
+                        <!-- <form action="/admin/edit-instructor" method="post">
                             
                             <input type="hidden" name="instructorId" value="<%= instructor._id %>">
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <button type="submit">Edit instructor</button> 
-                        </form>
+                        </form> -->
+                        <a href="/admin/edit-instructor/<%= instructor.id %>/?edit=true" class="btn btn-primary">Edit instructor</a>
                     <% } %>
 
                 <% }); %>

@@ -12,16 +12,16 @@
 
               <p class="">Add course</p>
 
-              <form action="/admin/add-instructor" method="POST">
+              <form action="/admin/<% if(editMode) {%>edit-instructor<% } else { %>add-instructor<% } %>" method="POST">
                 
                     <label for="name">Name of the Instructor</label>
-                    <input type="text" name="name" id="name"  placeholder="Name of the Instructor">
+                    <input type="text" name="name" id="name"  placeholder="Name of the Instructor" value="<% if(editMode) {%><%= instructor.name %><% } %>">
      
 
 
      
                     <label for="opinion" class="sr-only">Opinion</label>
-                    <input type="text" name="opinion" id="opinion" class="form-control" placeholder="Opinion">
+                    <input type="text" name="opinion" id="opinion" class="form-control" placeholder="Opinion" value="<% if(editMode) {%><%= instructor.opinion %><% } %>">
             
 <!--    
                     <label for="instructor" class="sr-only">Name of the instructor</label>
@@ -34,8 +34,16 @@
 
 				  <!-- Check these two files Upon the login button we needed -->
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <% if(editMode) { %>
+                    <input type="hidden" name="instructorId" value="<%= instructor._id %>">
+                <% } %>
+
                 <button class="btn btn-block login-btn mb-4" type="submit">
-                    Add Instructor
+                    <% if(editMode) { %>
+                        Edit Instructor
+                    <% } else { %>
+                        Add Instructor
+                    <% } %>
                 </button>
                   <!-- <input name="login" id="login" class="btn btn-block login-btn mb-4" type="button" type="submit" value="Login"> -->
 

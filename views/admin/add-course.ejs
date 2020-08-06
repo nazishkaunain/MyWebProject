@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,38 +10,44 @@
 
 <body>
 
-              <p class="">Add course</p>
+    <p class="">Add course</p>
 
-              <form action="/admin/add-course" method="POST">
-                
-                    <label for="name">Name of the Course</label>
-                    <input type="text" name="name" id="name"  placeholder="Name of the course">
+    <form action="/admin/<% if(editMode) {%>edit-course<% } else { %>add-course<% }%>" method="POST">
+
+        <label for="name">Name of the Course</label>
+        <input type="text" name="name" id="name" placeholder="Name of the course" value="<% if(editMode) {%><%= course.name %><%}%>">
      
 
 
      
                     <label for="courseCode" class="sr-only">Code of the Course</label>
-                    <input type="text" name="courseCode" id="courseCode" class="form-control" placeholder="Code course">
+                    <input type="text" name="courseCode" id="courseCode" class="form-control" placeholder="Code course" value="<% if(editMode) {%><%= course.courseCode %><%}%>">
             
    
                     <label for="instructor">Name of the instructor: </label>
                     <select id="instructor" name="instructor">
                         <% instructors.map(instructor => { %>
                             <option value="<%= instructor._id %>"><%= instructor.name %></option>
-                        <% }); %>
+                    <% }); %>
                     </select>
 
-        
-
-              
 
 
-				  <!-- Check these two files Upon the login button we needed -->
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <button class="btn btn-block login-btn mb-4" type="submit">
-                    Add Course
-                </button>
-                  <!-- <input name="login" id="login" class="btn btn-block login-btn mb-4" type="button" type="submit" value="Login"> -->
+
+
+
+        <!-- Check these two files Upon the login button we needed -->
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <% if(editMode) { %>
+            <input type="hidden" name="courseId" value="<%= course._id %>">
+        <% } %>
+        <button class="btn btn-block login-btn mb-4" type="submit">
+            <% if(editMode) { %>
+                Edit Course
+            <% } else { %>
+                Add Course
+            <% } %>
+        </button>
 
 </body>
 

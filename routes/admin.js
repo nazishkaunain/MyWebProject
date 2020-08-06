@@ -25,7 +25,13 @@ router.get("/add-instructor", isAuth, isAdmin, adminControllers.getAddInstructor
 
 router.post("/add-instructor", isAuth, isAdmin, adminControllers.postAddInstructor);
 
-//router.post("/edit-course", isAuth, isAdmin, adminControllers.postEditCourse);
+router.get("/edit-course/:courseId", isAuth, isAdmin, adminControllers.getEditCourse);
+
+router.post("/edit-course", isAuth, isAdmin, adminControllers.postEditCourse);
+
+router.get("/edit-instructor/:instructorId", isAuth, isAdmin, adminControllers.getEditInstructor);
+
+router.post("/edit-instructor", isAuth, isAdmin, adminControllers.postEditInstructor);
 
 
 
