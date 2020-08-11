@@ -3,16 +3,133 @@
 
 
 <body>
+  <link rel="stylesheet" href="assets/css/profile.css">
   <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
     <div class="container">
 
 
       <div class="card login-card" style="margin-top: 100px">
         <div class="row no-gutters">
-          <div class="col-md-5">
-            <img src="assets/images/login.jpg" alt="login" class="login-card-img">
+     
+          <div class="col-lg-6 col-md-6">
+            <div class="card-body">
+            
+			<!-- The user profile photo will come here -->
+			 <div class="row">
+			   <div class="col-lg-1"></div>	
+			   <div class="col-lg-4">	
+					<div class="brand-wrapper">
+						<img src="https://vibhanshujainiiitr.github.io/img/me.jpeg" alt="Profile Pic" class="logo" style="border-radius:20%; width:100%; height:150px;">
+					</div>
+			   </div>	
+               <div class="col-lg-1"></div>
+             </div>
+             
+              
+              <p class="login-card-description">Your Profile</p>
+
+              <form action="/build-profile" method="POST">
+
+				<!-- The user name ( pass her the user name too ) -->
+				<div class="form-group">
+                    <label for="name" class="sr-only">Name</label>
+                    <input type="name" name="name" id="name" class="form-control" placeholder="Name">
+                </div>
+                
+                <!-- The mail id given ( pass here the mail ID given previosly )-->
+                <div class="form-group">
+                    <label for="email" class="sr-only">Email</label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="Email address">
+                </div>
+                    
+                <!-- for the degree like Btech , Mtech etc ||| Just change the degree further -->
+
+					<label for="degree"><h5>Degree</h5></label>
+						<div class="custom-select" style="width:100%;height:100%">
+						<select id="degree" name="degree">
+							<option value="Computer-Science">Computer-Science</option>
+							<option value="Electriclal">Electriclal</option>
+							<option value="Artificial Intelligence">AI</option>
+							<option value="Engineering Science">ES</option>
+						</select>
+						</div>
+						
+					<br><br>
+					
+					 <label for="department"><h5>Department</h5></label>
+						 <div class="custom-select" style="width:100%;height:100%;">
+						 <select id="department" name="department">
+							<option value="Computer-Science">Computer-Science</option>
+							<option value="Electriclal">Electriclal</option>
+							<option value="Artificial Intelligence">AI</option>
+							<option value="Engineering Science">ES</option>
+						  </select>
+						  </div>
+                    
+                    <br><br>
+				
+				<div class="form-group">
+					  <h5>Year of Graduation</h5>
+					 <label for="yearOfGraduation" class="sr-only">Year Of Graduation</label>
+					 <input type="number" id="yearOfGraduation" class="form-control" name="yearOfGraduation" placeholder="2020">
+				</div>
+                
+                
+				<!-- 
+                <label for="quantity">Year Of Graduation</label>
+                <input type="number" id="quantity" name="quantity" min="1" max="5">
+                     -->
+
+                  <!-- <div class="form-group">
+                    <label for="male" class="sr-only">Male</label>
+                    <input type="radio" name="gender" id="male" class="form-control">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="female" class="sr-only">Female</label>
+                    <input type="radio" name="gender" id="female" class="form-control">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="other" class="sr-only">Other</label>
+                    <input type="radio" name="gender" id="other" class="form-control">
+                  </div> -->
+               
+				  <h5>Date of birth </h5>
+					<div class="form-group">
+						<label for="birthday">Birthday:</label>
+						<input type="date" id="birthday" name="birthday">
+					</div>
+
+
+               <!-- Radio buttons for gender -->
+				  <h5><br>Select your gender</h5>	
+					<div class="form-group">
+						<input type="radio" id="male" name="gender" value="male">
+						<label for="male">Male</label><br>
+                    
+						<input type="radio" id="female" name="gender" value="female">
+						<label for="female">Female</label><br>
+                    
+						<input type="radio" id="other" name="gender" value="other">
+						<label for="other">Other</label>
+					</div>
+
+
+				  <!-- Check these two files Upon the login button we needed -->
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="btn btn-block login-btn mb-4" type="submit">Add my profile</button>
+                  <!-- <input name="login" id="login" class="btn btn-block login-btn mb-4" type="button" type="submit" value="Login"> -->
+
+              </form>
+                <nav class="login-card-footer-nav">
+                  <a href="#">Terms of use.</a>
+                  <a href="#">Privacy policy</a>
+                </nav>
+            </div>
           </div>
-          <div class="col-md-7">
+        
+                  <div class="col-md-6">
             <div class="card-body">
               <div class="brand-wrapper">
                 <img src="assets/images/logo.svg" alt="logo" class="logo">
@@ -106,16 +223,97 @@
         </div>
       </div>
 
-    </div>
+      </div>
+
+	 </div>
   </main>
 
-<!-- why is javascript partial not use here -->
 
-
-  <!-- JS files CDN -->
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>
 
+<script>
+var x, i, j, l, ll, selElmnt, a, b, c;
+/* Look for any elements with the class "custom-select": */
+x = document.getElementsByClassName("custom-select");
+l = x.length;
+for (i = 0; i < l; i++) {
+  selElmnt = x[i].getElementsByTagName("select")[0];
+  ll = selElmnt.length;
+  /* For each element, create a new DIV that will act as the selected item: */
+  a = document.createElement("DIV");
+  a.setAttribute("class", "select-selected");
+  a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+  x[i].appendChild(a);
+  /* For each element, create a new DIV that will contain the option list: */
+  b = document.createElement("DIV");
+  b.setAttribute("class", "select-items select-hide");
+  for (j = 1; j < ll; j++) {
+    /* For each option in the original select element,
+    create a new DIV that will act as an option item: */
+    c = document.createElement("DIV");
+    c.innerHTML = selElmnt.options[j].innerHTML;
+    c.addEventListener("click", function(e) {
+        /* When an item is clicked, update the original select box,
+        and the selected item: */
+        var y, i, k, s, h, sl, yl;
+        s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+        sl = s.length;
+        h = this.parentNode.previousSibling;
+        for (i = 0; i < sl; i++) {
+          if (s.options[i].innerHTML == this.innerHTML) {
+            s.selectedIndex = i;
+            h.innerHTML = this.innerHTML;
+            y = this.parentNode.getElementsByClassName("same-as-selected");
+            yl = y.length;
+            for (k = 0; k < yl; k++) {
+              y[k].removeAttribute("class");
+            }
+            this.setAttribute("class", "same-as-selected");
+            break;
+          }
+        }
+        h.click();
+    });
+    b.appendChild(c);
+  }
+  x[i].appendChild(b);
+  a.addEventListener("click", function(e) {
+    /* When the select box is clicked, close any other select boxes,
+    and open/close the current select box: */
+    e.stopPropagation();
+    closeAllSelect(this);
+    this.nextSibling.classList.toggle("select-hide");
+    this.classList.toggle("select-arrow-active");
+  });
+}
+
+function closeAllSelect(elmnt) {
+  /* A function that will close all select boxes in the document,
+  except the current select box: */
+  var x, y, i, xl, yl, arrNo = [];
+  x = document.getElementsByClassName("select-items");
+  y = document.getElementsByClassName("select-selected");
+  xl = x.length;
+  yl = y.length;
+  for (i = 0; i < yl; i++) {
+    if (elmnt == y[i]) {
+      arrNo.push(i)
+    } else {
+      y[i].classList.remove("select-arrow-active");
+    }
+  }
+  for (i = 0; i < xl; i++) {
+    if (arrNo.indexOf(i)) {
+      x[i].classList.add("select-hide");
+    }
+  }
+}
+
+/* If the user clicks anywhere outside the select box,
+then close all select boxes: */
+document.addEventListener("click", closeAllSelect);
+</script>
+
+
 <%- include("../partials/footer.ejs") -%>
+<%- include("../partials/javascript.ejs") -%>
