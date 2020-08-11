@@ -1,14 +1,11 @@
+<%- include("../partials/header.ejs") -%>
+<%- include("../partials/navigation.ejs") -%>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= pageTitle %></title>
-</head>
 
 
 <body>
+    <br>
+    <br><br><br><br>
 
               <p class="">My Courses</p>
 
@@ -23,7 +20,7 @@
                         <input type="hidden" name="courseId" value="<%= course._id %>">
         
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <button class="btn btn-block login-btn mb-4" type="submit">
+                        <button class="btn btn-primary" type="submit">
                             Unfollow course
                         </button>
                     </form>
