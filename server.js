@@ -38,7 +38,7 @@ app.use(express.static("public"));
 app.use(session({
   secret: process.env.SECRET, //put it in .env file
   resave: false,
-  saveUninitialised: false,
+  saveUninitialized: false,
   store: store //it connects session to mongdb store
 }));
 
