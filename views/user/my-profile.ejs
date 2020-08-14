@@ -1,0 +1,59 @@
+<%- include("../partials/header.ejs") -%>
+<%- include("../partials/navigation.ejs") -%>
+
+
+<body>
+  <link rel="stylesheet" href="assets/css/profile.css">
+  <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+    <div class="container">
+
+      <div class="card login-card" style="margin-top: 100px">
+			
+			<div class="row no-gutters card-body">
+     
+						<div class="col-lg-6 col-md-6">
+            
+						<!-- The user profile photo will come here -->
+								<div class="row">
+									<div class="col-lg-1"></div>	
+									<div class="col-lg-4">	
+										<div class="brand-wrapper">
+											<img src="https://vibhanshujainiiitr.github.io/img/me.jpeg" alt="Profile Pic" class="logo" style="border-radius:20%; width:100%; height:150px;">
+										</div>
+									</div>	
+									<div class="col-lg-1"></div>
+								</div>
+             
+								<p class="login-card-description">Your Profile</p>
+
+                            <h3>Name: <%= user.name %></h3>
+                            <h3>Degree: <%= user.degree %></h3>
+                            <h3>Department: <%= user.department %></h3>
+                            <h3>Year Of Graduation: <%= user.yearOfGraduation %></h3>
+                            <h3>DOB: <%= user.birthday %></h3>
+                            <h3>Gender: <%= user.gender %></h3>
+
+                            <p>Your Courses</p>
+                            <ul>
+                                <% courses.map(course => { %>
+                                    <li>Course: <%= course.name %> Course code: <%= course.courseCode %> instructor: <%= course.instructor.name %></li>
+                                <% }); %>
+                            </ul>
+                            <br>
+                            <br>
+                            <a href="/edit-profile/<%= user.id %>/?edit=true" class="btn btn-primary">Edit Profile</a>
+			</div>											<!--=============== Div class=row closes here=====-->
+
+            
+
+          </div>											<!--=============== Card closes here==============--->
+
+        </div>												<!--=============== Container closes here ========-->	
+ 
+  </main>
+
+
+</body>
+
+<%- include("../partials/footer.ejs") -%>
+<%- include("../partials/javascript.ejs") -%>

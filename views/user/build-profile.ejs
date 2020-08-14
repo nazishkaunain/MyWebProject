@@ -26,19 +26,13 @@
              
 								<p class="login-card-description">Your Profile</p>
 
-							<form action="/build-profile" method="POST">
+							<form action="<% if(editMode) { %>/edit-profile<% } else { %>/build-profile<% } %>" method="POST">
 
 										<!-- The user name ( pass her the user name too ) -->
 										<div class="form-group">
 												<label for="name" class="sr-only">Name</label>
-												<input type="name" name="name" id="name" class="form-control" placeholder="Name">
+												<input type="name" name="name" id="name" class="form-control" placeholder="Name" value="<% if(editMode) {%><%= user.name %><%} else {%><%= name %><% } %>">
 										</div>
-                
-										<!-- The mail id given ( pass here the mail ID given previosly )-->
-										<!-- <div class="form-group">
-												<label for="email" class="sr-only">Email</label>
-												<input type="email" name="email" id="email" class="form-control" placeholder="Email address">
-										</div> -->
                     
 										<!-- for the degree like Btech , Mtech etc ||| Just change the degree further -->
 											<label for="degree"><h5>Degree</h5></label>
@@ -78,7 +72,7 @@
 										<div class="form-group">
 											<h5>Year of Graduation</h5>
 											<label for="yearOfGraduation" class="sr-only">Year Of Graduation</label>
-											<input type="number" id="yearOfGraduation" class="form-control" name="yearOfGraduation" placeholder="2020">
+											<input type="number" id="yearOfGraduation" class="form-control" name="yearOfGraduation" placeholder="2020"  value="<% if(editMode) {%><%= user.yearOfGraduation %><%}%>">
 										</div>
 
 										<div class="form-group">
@@ -103,8 +97,13 @@
 
 
 											<!-- Check these two files Upon the login button we needed -->
-											<input type="hidden" name="_csrf" value="<%= csrfToken %>">
-										<button class="btn btn-block login-btn mb-4" type="submit">Add my profile</button>
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <% if(editMode) { %>
+                        <button class="btn btn-block login-btn mb-4" type="submit">Edit my profile</button>
+                      <% } else { %>
+                        <button class="btn btn-block login-btn mb-4" type="submit">Add my profile</button>
+                      <% } %>
+										
 										<!-- <input name="login" id="login" class="btn btn-block login-btn mb-4" type="button" type="submit" value="Login"> -->
 					
 					  </div>		<!-- Column 6 closed -->

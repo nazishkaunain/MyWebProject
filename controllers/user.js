@@ -1,5 +1,6 @@
 const path = require("path");
 const course = require("../models/course");
+const { render } = require("ejs");
 
 const User = require(path.join(__dirname, "..", "models", "user.js"));
 
@@ -27,7 +28,9 @@ exports.getBuildProfile = (req, res, next) => {
     console.log(req.user._id);
     res.render("user/build-profile", {
         pageTitle: "Build Profile",
-        path: "/build-profile"
+        path: "/build-profile",
+        editMode: false,
+        name: req.user.name
     });
 };
 
@@ -60,6 +63,36 @@ exports.postBuildProfile = (req, res, next) => {
     
 };
 
+exports.getProfile = (req, res, next) => {
+    req.user
+        .populate({ path: "courses", populate: { path: "instructor" } })
+        .execPopulate()
+        .then(user => {
+            return res.render("user/my-profile", {
+                pageTitle: "My Profile",
+                path: "/my-profile",
+                user: user,
+                courses: user.courses
+            })
+        })
+}
+
+exports.getEditProfile = (req, res, next) => {
+    const editMode = req.query.edit;
+    if (!editMode) {
+        console.log("You do not have the permission to edit your profile");
+        res.redirect("/index");
+    }
+    const userId = req.params.userId;
+    return res.render("user/build-profile", {
+        pageTitle: "Edit Profile",
+        path: "/edit-profile",
+        editMode: editMode,
+        user: req.user
+    })
+    
+}
+
 exports.getCourses = (req, res, next) => {
     Course
         .find()
@@ -72,7 +105,10 @@ exports.getCourses = (req, res, next) => {
                 path: "/get-courses",
                 courses: courses,
                 userCourses: req.user.courses
-            })
+            });
+        })
+        .catch(err => {
+            console.log(err);
         })
     
 }

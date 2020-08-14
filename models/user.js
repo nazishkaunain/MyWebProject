@@ -30,8 +30,8 @@ const userSchema = new Schema({
     },
     birthday: {    ///m.date = Date('2013-12-31');
         type: Date,
-        max: Date('2014-01-01'),
-        min: Date('1996-01-01')
+        //max: Date('2014-01-01'),
+        //min: Date('1996-01-01')
     },
     degree: {
         type: String
