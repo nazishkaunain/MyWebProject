@@ -1,32 +1,40 @@
 <%- include("../partials/header.ejs") -%>
 <%- include("../partials/navigation.ejs") -%>
 
-
-
 <body>
-    <br>
-    <br><br><br><br>
-
-              <p class="">My Courses</p>
-
-    
-                <% courses.map(course => { %>
-                    <h1>Name of the Course: <%= course.name %></h1>
-
-                    <h1>courseCode: <%= course.courseCode %></h1>
-
-                    <h1>instructor: <%= course.instructor.name %></h1>
-                    <form action="/unfollow-course" method="POST">
-                        <input type="hidden" name="courseId" value="<%= course._id %>">
+	<div class="container">
+			<h1 style="text-align:center; padding-top:120px;padding-bottom:30px;">My Courses</h1>
+			<div class="row col-lg-12">
+				
+				<% courses.map(course => { %>
+				
+				<div class="col-lg-3 col-md-4 col-12 card shadow" style="padding-top:10px; padding-bottom:20px; margin-left:20px; margin-right:20px; margin-bottom:40px;">
+					
+						<p>
+<!--======================= I Removed the course name and all other as they were not looking good =======================-->
+								<h3><%= course.name %></h3>
+								
+								<h6 class="text-muted"><%= course.courseCode %></h6>
+								
+								<h6 class="text-muted"><%= course.instructor.name %></h6>
+						</p>
+						
+							<form action="/unfollow-course" method="POST">
+								<input type="hidden" name="courseId" value="<%= course._id %>">
         
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <button class="btn btn-primary" type="submit">
-                            Unfollow course
-                        </button>
-                    </form>
-
-                <% }); %>
+								<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+									<button class="btn btn-primary btn-block login-btn mb-4" type="submit">
+										Unfollow course
+									</button>
+							</form>
+						
+				</div>
+				 
+				<% }); %> 
+				 
+			</div>   <!-- div class row closed -->
+	</div>			 <!-- div class container  -->
 
 </body>
-
+<%- include("../partials/javascript.ejs") -%>
 <%- include("../partials/footer.ejs") -%>

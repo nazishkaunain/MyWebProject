@@ -3,22 +3,23 @@
 <%- include("../partials/navigation.ejs") -%>
 
 
-
 <body>
-    <br>
-    <br><br><br><br>
-
-              <p class="">instructors</p>
-
+	<div class="container">
+			<h1 style="text-align:center; padding-top:120px;padding-bottom:30px;">All Instructure</h1>
+			<div class="row col-lg-12">
     
                 <% instructors.map(instructor => { %>
-                    <h1>Name of the instructor: <%= instructor.name %></h1>
+                
+                <div class="col-lg-4 col-md-4 col-12 card shadow" style="padding-top:10px; padding-bottom:20px; margin-left:20px; margin-right:20px; margin-bottom:40px;">
 
-                    <h1>Opinion about the instructor: <%= instructor.opinion %></h1>
+                    <h3><%= instructor.name %></h3>
 
+                    <h5 class="text-muted">Opinion about the instructor: <%= instructor.opinion %></h5>
+                    <h5 class="text-muted">Courses Offered</h5>
+                    
                     <ul>
                         <% instructor.courses.map(course => { %>
-                             <li>Name of the Course: <%= course._id %></li>
+                             <li><h6 class="text-muted"><%= course._id %></h6></li>
                         <% }); %>
                     </ul>
 
@@ -28,13 +29,17 @@
                             
                             <input type="hidden" name="instructorId" value="<%= instructor._id %>">
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                            <button type="submit">Edit instructor</button> 
+                            <button class="btn btn-block login-btn mb-4" type="submit">Edit instructor</button> 
                         </form> -->
                         <a href="/admin/edit-instructor/<%= instructor.id %>/?edit=true" class="btn btn-primary">Edit instructor</a>
                     <% } %>
-
+			
+			</div>
                 <% }); %>
-
+             
+      	</div>   	 <!-- div class row closed -->
+	</div>			 <!-- div class container  -->
+	
 </body>
 
 <%- include("../partials/footer.ejs") -%>
