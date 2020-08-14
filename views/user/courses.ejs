@@ -4,60 +4,70 @@
 
 
 <body>
-    <br>
-    <br><br><br><br>
-    <div>
-              <p class="">Courses</p>
+	<div class="container">
+			<h1 style="text-align:center; padding-top:120px;padding-bottom:30px;">All Courses</h1>
+			<div class="row col-lg-12">
+				
+				<% courses.map(course => { %>
+				
+				<div class="col-lg-3 col-md-4 col-12 card shadow" style="padding-top:10px; padding-bottom:20px; margin-left:20px; margin-right:20px; margin-bottom:40px;">
+					
+						<p>
+<!--======================= I Removed the course name and all other as they were not looking good =======================-->
+								<h3><%= course.name %></h3>
+								
+								<h6 class="text-muted"><%= course.courseCode %></h6>
+								
+								<h6 class="text-muted"><%= course.instructor.name %></h6>
+						</p>
 
-    
-                <% courses.map(course => { %>
-                    <h1>Name of the Course: <%= course.name %></h1>
-
-                    <h1>courseCode: <%= course.courseCode %></h1>
-
-                    <h1>instructor: <%= course.instructor.name %></h1>
-
-                    <% let flag = false %>
-                    <% userCourses.map(userCourse => { %>
-                        <% console.log(userCourse); %>
-                        <% if(userCourse._id.toString() === course._id.toString()) { %>
-                            <% flag = true; %>
-                            <h1 class="btn btn-primary">You already follow this course</h1>
-                        <% } %>
-                    <% }) %>
-                    <% if(!flag) { %>
-                        <form action="/follow-courses" method="POST">
-                            <input type="hidden" name="courseId" value="<%= course._id %>">
+							<% let flag = false %>
+								<% userCourses.map(userCourse => { %>
+								<% console.log(userCourse); %>
+							<% if(userCourse._id.toString() === course._id.toString()) { %>
+								<% flag = true; %>
+						<h1 class="btn btn-primary btn-block login-btn mb-4">You already follow this course</h1>
+							<% } %>
+							<% }) %>
+							<% if(!flag) { %>
+								<form action="/follow-courses" method="POST">
+									<input type="hidden" name="courseId" value="<%= course._id %>">
             
-                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                            <button class="btn btn-primary" type="submit">
-                                
-                                Follow course
-                            </button>
-                        </form>
-                    <% } %>
-                    <!-- <form action="/follow-courses" method="POST">
-                        <input type="hidden" name="courseId" value="<%= course._id %>">
+									<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+									
+									<button class="btn btn-primary btn-block login-btn mb-4" type="submit">
+										Follow Course
+									</button>
+								</form>
+							<% } %>
+                    
+								<!-- <form action="/follow-courses" method="POST">
+									<input type="hidden" name="courseId" value="<%= course._id %>">
         
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <button class="btn btn-block login-btn mb-4" type="submit">
-                            
-                            Follow course
-                        </button>
-                    </form> -->
+									<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+									<button class="btn btn-block login-btn mb-4" type="submit">                            
+										Follow course
+									</button>
+								</form> -->
 
-                    <% if(isAdmin) { %>
-                        <!-- <form action="/admin/edit-course" method="post">
-                            <input type="hidden" name="courseId" value="<%= course._id %>">
-                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                            <button type="submit">Edit Course</button> 
-                        </form> -->
+							<% if(isAdmin) { %>
+								<!-- <form action="/admin/edit-course" method="post">
+									<input type="hidden" name="courseId" value="<%= course._id %>">
+									<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+									<button class="btn btn-block login-btn mb-4" type="submit">Edit Course</button> 
+								</form> -->
 
-                        <a href="/admin/edit-course/<%= course.id %>/?edit=true" class="btn btn-primary">Edit</a>
-                    <% } %>
+						<a href="/admin/edit-course/<%= course.id %>/?edit=true" class="btn btn-primary">Edit</a>
+                    
+						<% } %>
+						
+				</div>
+				 
+				<% }); %> 
+				 
+			</div>   <!-- div class row closed -->
+	</div>			 <!-- div class container  -->
 
-                <% }); %>
-      </div>
 </body>
 
 <%- include("../partials/footer.ejs") -%>
