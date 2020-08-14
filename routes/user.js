@@ -24,6 +24,12 @@ router.get("/build-profile", isAuth, userControllers.getBuildProfile);
 
 router.post("/build-profile", isAuth, userControllers.postBuildProfile);
 
+router.get("/edit-profile/:userId", isAuth, userControllers.getEditProfile);
+
+//router.post("/edit-profile", isAuth, userControllers.postEditProfile);
+
+router.get("/my-profile", isAuth, userControllers.getProfile);
+
 router.get("/get-courses", isAuth, userControllers.getCourses);
 
 router.get("/get-instructors", isAuth, userControllers.getInstructors);
