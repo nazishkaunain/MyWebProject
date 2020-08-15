@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const { isatty } = require("tty");
 
 const userControllers = require(path.join(__dirname, "..", "controllers", "user.js"));
 
@@ -39,5 +40,9 @@ router.post("/follow-courses", isAuth, userControllers.followCourses);
 router.get("/get-my-courses", isAuth, userControllers.getMyCourses);
 
 router.post("/unfollow-course", isAuth, userControllers.unfollowCourse);
+
+router.get("/courses/:courseId", isAuth, userControllers.getCourse);
+
+router.get("/instructors/:instructorId", isAuth, userControllers.getInstructor);
 
 module.exports = router;

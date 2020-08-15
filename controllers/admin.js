@@ -235,7 +235,6 @@ exports.getAddInstructor = (req, res, next) => {
 
 exports.postAddInstructor = (req, res, next) => {
     const name = req.body.name;
-    const opinion = req.body.opinion;
 
     const instructor = new Instructor({
         name: name,
@@ -403,3 +402,23 @@ exports.postEditInstructor = (req, res, next) => {
             console.log(err);
         });
 };
+
+exports.postAddOpinion = (req, res, next) => {
+    const instructorId = req.body.instructorId;
+    const opinion = req.body.opinion;
+    const admin = req.user._id;
+
+    console.log(req.user._id);
+
+    Instructor.findById(instructorId)
+        .then(instructor => {
+            instructor.opinions.push({ opinion: opinion, admin: admin });
+            return instructor.save();
+        })
+        .then(() => {
+            return res.redirect("/instructors/" + instructorId);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}

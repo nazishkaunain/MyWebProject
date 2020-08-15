@@ -5,7 +5,7 @@
 
 <body>
 	<div class="container">
-			<h1 style="text-align:center; padding-top:120px;padding-bottom:30px;">All Instructure</h1>
+			<h1 style="text-align:center; padding-top:120px;padding-bottom:30px;">All Instructors</h1>
 			<div class="row col-lg-12">
     
                 <% instructors.map(instructor => { %>
@@ -14,15 +14,16 @@
 
                     <h3><%= instructor.name %></h3>
 
-                    <h5 class="text-muted">Opinion about the instructor: <%= instructor.opinion %></h5>
+                    <!-- <h5 class="text-muted">Opinion about the instructor: <%= instructor.opinion %></h5> -->
                     <h5 class="text-muted">Courses Offered</h5>
                     
                     <ul>
                         <% instructor.courses.map(course => { %>
-                             <li><h6 class="text-muted"><%= course._id %></h6></li>
+                             <li><h6 class="text-muted"><%= course.name %></h6></li>
                         <% }); %>
                     </ul>
 
+                    <a class="btn btn-primary btn-block login-btn mb-4" href="/instructors/<%= instructor._id %>">View instructor</a>
 
                     <% if(isAdmin) { %>
                         <!-- <form action="/admin/edit-instructor" method="post">
@@ -31,7 +32,7 @@
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <button class="btn btn-block login-btn mb-4" type="submit">Edit instructor</button> 
                         </form> -->
-                        <a href="/admin/edit-instructor/<%= instructor.id %>/?edit=true" class="btn btn-primary">Edit instructor</a>
+                        <a href="/admin/edit-instructor/<%= instructor.id %>/?edit=true" class="btn btn-primary btn-block login-btn mb-4">Edit instructor</a>
                     <% } %>
 			
 			</div>

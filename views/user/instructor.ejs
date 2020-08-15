@@ -1,0 +1,31 @@
+<%- include("../partials/header.ejs") -%>
+<%- include("../partials/navigation.ejs") -%>
+<body>
+    <h1>Instructor Name: <%= instructor.name %></h1>
+    <h1>Courses offerd by him</h1>
+    <ul>
+        <% courses.map(course => { %>
+            <li><%= course.name %></li>
+        <% }) %>
+        
+    </ul>
+    <h2>The opinions about the instructor</h2>
+    <% opinions.map(opinion => { %>
+        <p><%= opinion.opinion %></p>
+    <% }) %>
+
+    <% if(isAdmin) { %>
+        <form action="/admin/instructor/add-opinion" method="POST">
+            <label for="opinion">Add another opinion</label>
+            <textarea name="opinion" id="opinion" cols="30" rows="4"></textarea>
+
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="instructorId" value="<%= instructor._id %>">
+
+            <button type="submit">Submit</button>
+        </form>
+    <% } %> 
+</body>
+
+<%- include("../partials/javascript.ejs") -%>
+<%- include("../partials/footer.ejs") -%>

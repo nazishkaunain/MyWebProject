@@ -17,10 +17,17 @@ const instructorSchema = new Schema({
         }
     ],
     //general opinion formed by the past students who enrolled for any of his courses
-    opinion: {
-        type: String,
-        required: true
-    }
+    opinions: [
+        {
+            opinion: {
+                type: String,
+            },
+            admin: {
+                type: Schema.Types.ObjectId,
+                ref: "User"
+            }
+        }   
+    ]
 });
 
 module.exports = mongoose.model("Instructor", instructorSchema);

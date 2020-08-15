@@ -18,6 +18,7 @@
 								
 								<h6 class="text-muted"><%= course.instructor.name %></h6>
 						</p>
+							<a class="btn btn-primary btn-block login-btn mb-4" href="/courses/<%= course._id %>">View Course</a>
 						
 							<form action="/unfollow-course" method="POST">
 								<input type="hidden" name="courseId" value="<%= course._id %>">

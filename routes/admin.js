@@ -33,6 +33,8 @@ router.get("/edit-instructor/:instructorId", isAuth, isAdmin, adminControllers.g
 
 router.post("/edit-instructor", isAuth, isAdmin, adminControllers.postEditInstructor);
 
+router.post("/instructor/add-opinion", isAuth, isAdmin, adminControllers.postAddOpinion);
+
 
 
 module.exports = router;

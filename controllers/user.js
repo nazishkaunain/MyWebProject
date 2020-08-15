@@ -187,5 +187,45 @@ exports.unfollowCourse = (req, res, next) => {
         });
 };
 
+exports.getCourse = (req, res, next) => {
+    const courseId = req.params.courseId;
+
+    Course.findById(courseId)
+        .populate("instructor")
+        .exec()
+        .then(course => {
+            return res.render("user/course", {
+                pageTitle: course.name,
+                path:"/courses/"+courseId,
+                course: course,
+                instructor: course.instructor
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
+exports.getInstructor = (req, res, next) => {
+    const instructorId = req.params.instructorId;
+
+    Instructor.findById(instructorId)
+        .populate("courses")
+        .exec()
+        .then(instructor => {
+            console.log(instructor);
+            return res.render("user/instructor", {
+                pageTitle: instructor.name,
+                path: "/instructors/" + instructorId,
+                instructor: instructor,
+                courses: instructor.courses,
+                opinions: instructor.opinions
+            })
+        })
+        .catch(err => {
+            console.log(err);
+        });
+}
+
 
 
