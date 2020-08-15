@@ -1,12 +1,15 @@
 const path = require("path");
 const course = require("../models/course");
 const { render } = require("ejs");
+const { populate } = require("../models/course");
 
 const User = require(path.join(__dirname, "..", "models", "user.js"));
 
 const Course = require(path.join(__dirname, "..", "models", "course.js"));
 
 const Instructor = require(path.join(__dirname, "..", "models", "instructor.js"));
+
+const Post = require(path.join(__dirname, "..", "models", "post"));
 
 exports.getHome = (req, res, next) => {
     res.render("user/home", {
@@ -192,13 +195,21 @@ exports.getCourse = (req, res, next) => {
 
     Course.findById(courseId)
         .populate("instructor")
+        .populate({ path: "posts", populate: { path: "comments.user" } })
         .exec()
         .then(course => {
+            //the course.posts returned is a a javascript array of JSON
+            //so first convert into JSON string
+            //and then parse the JSON to convert it into a javascript array of javascript objects
+            //let arrayPosts = JSON.stringify(course.posts);
+            //arrayPosts = JSON.parse(arrayPosts);
+            //console.log(arrayPosts);
             return res.render("user/course", {
                 pageTitle: course.name,
                 path:"/courses/"+courseId,
                 course: course,
-                instructor: course.instructor
+                instructor: course.instructor,
+                posts : course.posts
             });
         })
         .catch(err => {
@@ -225,7 +236,28 @@ exports.getInstructor = (req, res, next) => {
         .catch(err => {
             console.log(err);
         });
-}
+};
+
+exports.postAddComment = (req, res, next) => {
+    const user = req.user._id;
+    const postId = req.body.postId;
+    const courseId = req.body.courseId;
+    const comment = req.body.comment;
+    console.log(postId);
+
+    Post.findById(postId)
+        .then(post => {
+            console.log(post);
+            post.comments.push({ comment: comment, user: user });
+            return post.save();
+        })
+        .then(() => {
+            return res.redirect("/courses/" + courseId);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
 
 
 

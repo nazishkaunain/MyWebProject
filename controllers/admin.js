@@ -1,16 +1,10 @@
 const path = require("path");
 
-// const bcrypt = require("bcryptjs");
-
-// const crypto = require("crypto"); //inbuilt library provided by node.js
-
-// const nodemailer = require("nodemailer");
-
-// const sendgridTransport = require("nodemailer-sendgrid-transport");
-
 const User = require(path.join(__dirname, "..", "models", "user.js"));
 
 const Course = require(path.join(__dirname, "..", "models", "course.js"));
+
+const Post = require(path.join(__dirname, "..", "models", "post"));
 
 const Instructor = require(path.join(
     __dirname,
@@ -18,156 +12,6 @@ const Instructor = require(path.join(
     "models",
     "instructor.js"
 ));
-
-// const transporter = nodemailer.createTransport(
-//     sendgridTransport({
-//         auth: {
-//             api_key: process.env.API_KEY,
-//         },
-//     })
-// );
-
-// exports.getLogin = (req, res, next) => {
-//     let message = req.flash("error");
-//     if (message.length > 0) {
-//         message = message[0];
-//     } else {
-//         message = null;
-//     }
-//     res.render("admin/login", {
-//         pageTitle: "Login Admin",
-//         path: "/admin/login",
-//         errorMessage: message,
-//     });
-// };
-
-// exports.postLogin = (req, res, next) => {
-//     const email = req.body.email;
-//     const password = req.body.password;
-
-//     Admin.findOne({ email: email })
-//         .then((user) => {
-//             if (!user) {
-//                 req.flash("error", "Invalid email!");
-//                 return res.redirect("/admin/login");
-//             }
-//             return bcrypt
-//                 .compare(password, user.password)
-//                 .then((result) => {
-//                     if (result) {
-//                         req.session.isLoggedIn = true;
-//                         req.session.user = user;
-//                         //normally you don't need to call .save() but you can call it if you need
-//                         //the guarantee that it redirects to "/" only after the session has been saved
-//                         return req.session.save((err) => {
-//                             if (!err) {
-//                                 console.log("Successfully logged in as the admin");
-//                                 res.redirect("/index");
-//                             } else console.log(err);
-//                         });
-//                     }
-//                     req.flash("error", "Invalid password!");
-//                     res.redirect("/admin/login");
-//                 })
-//                 .catch((err) => {
-//                     console.log(err);
-//                     res.redirect("/admin/login");
-//                 });
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         });
-// };
-
-// exports.getSignup = (req, res, next) => {
-//     let message = req.flash("error");
-//     if (message.length > 0) {
-//         message = message[0];
-//     } else {
-//         message = null;
-//     }
-
-//     res.render("admin/signup", {
-//         pageTitle: "Signup as Admin",
-//         errorMessage: message,
-//         path: "/admin/signup",
-//     });
-// };
-
-// exports.postSignup = (req, res, next) => {
-//     const secretKey = req.body.secretKey;
-//     const name = req.body.name;
-//     const email = req.body.email;
-//     const password = req.body.password;
-//     const confirmPassword = req.body.confirm - password;
-
-//     Admin.findOne({ email: email })
-//         .then((user) => {
-//             if (user) {
-//                 req.flash("error", "This email is already used!");
-//                 return res.redirect("/admin/signup");
-//             }
-//             if (secretKey === process.env.ADMIN_SECRET) {
-//                 // it is important chain the bcrypt whole things because when the user with the email already exists
-//                 //it will return only the "/signup" page,
-//                 //.then behaves like a whole function
-//                 //ref: Adding a Tiny Code Improvement
-//                 //module: Authentication
-//                 return bcrypt
-//                     .hash(password, 12)
-//                     .then((hashedPassword) => {
-//                         const newUser = new User({
-//                             name: name,
-//                             email: email,
-//                             password: hashedPassword,
-//                         });
-//                         return newUser.save();
-//                     })
-//                     .then((result) => {
-//                         res.redirect("/admin/login");
-//                         //to send the confirmation mail
-//                         return transporter.sendMail({
-//                             ///you can alse return transporter.sendMail.... if you want to redirect to the login
-//                             // only after the mail has been sent
-//                             to: email,
-//                             from: "kaunainnazish@gmail.com",
-//                             subject: "Signup succeeded",
-//                             //html contains the message you wanna send
-//                             html: "<h1>You successfully signed up as the admin!!</h1>",
-//                         });
-//                     })
-//                     .catch((err) => {
-//                         console.log(err);
-//                     });
-
-//             } else {
-//                 req.flash("error", "Looks like you are not autorized to do so!!");
-//                 return res.redirect("/admin/signup");
-//             }
-//         })
-//         .catch((err) => {
-//             console.log(err);
-//         });
-// };
-
-// exports.getHome = (req, res, next) => {
-//     res.render("admin/home", {
-//         pageTitle: "Admin Home Page"
-//     });
-// };
-
-// exports.getUsers = (req, res, next) => {
-//     User.find()
-//         .then(users => {
-//             res.render("admin/users", {
-//                 pageTitle: "Users",
-//                 users: users
-//             });
-//         })
-//         .catch(err => {
-//             console.log(err);
-//         });
-// };
 
 exports.getAddCourse = (req, res, next) => {
     Instructor.find()
@@ -203,6 +47,7 @@ exports.postAddCourse = (req, res, next) => {
         name: name,
         courseCode: courseCode,
         instructor: instructor,
+        posts: []
     });
 
     course
@@ -238,7 +83,7 @@ exports.postAddInstructor = (req, res, next) => {
 
     const instructor = new Instructor({
         name: name,
-        opinion: opinion,
+        opinions: [],
         courses: [],
     });
     instructor
@@ -408,8 +253,6 @@ exports.postAddOpinion = (req, res, next) => {
     const opinion = req.body.opinion;
     const admin = req.user._id;
 
-    console.log(req.user._id);
-
     Instructor.findById(instructorId)
         .then(instructor => {
             instructor.opinions.push({ opinion: opinion, admin: admin });
@@ -421,4 +264,42 @@ exports.postAddOpinion = (req, res, next) => {
         .catch(err => {
             console.log(err);
         });
-}
+};
+
+exports.postAddPost = (req, res, next) => {
+    const courseId = req.body.courseId;
+    const document = req.body.document;
+    const title = req.body.title;
+    const admin = req.user._id;
+
+    console.log(document);
+
+    const post = new Post({
+        title: title,
+        document: document,
+        course: courseId,
+        admin: admin,
+        comments: []
+    });
+    
+    let postId;
+    
+    post.save()
+        .then((post) => {
+            console.log(post);
+            postId = post._id;
+            return Course.findById(courseId);
+        })
+        .then(course => {
+            course.posts.push(postId);
+            return course.save();
+        })
+        .then(() => {
+            console.log("Successfully added the document");
+            return res.redirect("/courses/" + courseId);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+

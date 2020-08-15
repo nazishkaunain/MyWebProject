@@ -18,8 +18,8 @@ const User = require(path.join(__dirname, "models", "user"));
 const app = express();
 
 const store = new mongoDBStore({
-  uri: "mongodb://localhost:27017/projectDB",
-  //uri: process.env.DATABASE_API,  //remove retryWrites at the end when using online mongoose
+  //uri: "mongodb://localhost:27017/projectDB",
+  uri: process.env.DATABASE_API,  //remove retryWrites at the end when using online mongoose
   collection: "sessions"
 });
 
@@ -80,8 +80,8 @@ app.use("/", (req, res, next) => {
 });
 
 mongoose
-  .connect("mongodb://localhost:27017/projectDB")
-  //.connect(process.env.DATABASE_API)
+  //.connect("mongodb://localhost:27017/projectDB")
+  .connect(process.env.DATABASE_API)
   .then(result => {
     app.listen("5000");
   })

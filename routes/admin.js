@@ -35,6 +35,8 @@ router.post("/edit-instructor", isAuth, isAdmin, adminControllers.postEditInstru
 
 router.post("/instructor/add-opinion", isAuth, isAdmin, adminControllers.postAddOpinion);
 
+router.post("/course/add-post", isAuth, isAdmin, adminControllers.postAddPost);
+
 
 
 module.exports = router;

@@ -1,8 +1,49 @@
 <%- include("../partials/header.ejs") -%>
 <%- include("../partials/navigation.ejs") -%>
 <body>
+    <br><br><br><br>
     <h1>Course Name: <%= course.name %></h1>
     <h1>Instructor Name: <%= instructor.name %></h1>
+
+    <h2>The Posts</h2>
+    <ul>
+        <% console.log(posts); %>
+        <% posts.map(post => { %>
+            <li><%= post.title %></li>
+                <% post.comments.map(comment => { %>
+                    <p><%= comment.comment %> By <%= comment.user.name%></p>
+                <% }); %>
+                <% console.log(post); %>
+                <form action="/post/add-comment" method="POST">
+                    <label for="comment">Comment</label>
+                    <input type="text" name="comment" id="comment">
+
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" name="courseId" value="<%= course._id %>">
+                    <% console.log(post._id) %>
+                    <input type="hidden" name="postId" value="<%= post._id %>">
+
+                    <button type="submit">Submit</button>
+
+                </form>
+        <% }); %>
+    </ul>
+
+    <% if(isAdmin) { %>
+        <h2>Add a new Post</h2>
+        <form action="/admin/course/add-post" method="POST">
+            <label for="title">Title of the post</label>
+            <input type="text" name="title" id="title">
+
+            <label for="document">document</label>
+            <input type="text" name="document" id="document">
+
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="courseId" value="<%= course._id %>">
+
+            <button type="submit">Submit</button>
+        </form>
+    <% } %>
 </body>
 
 <%- include("../partials/javascript.ejs") -%>

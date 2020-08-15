@@ -45,4 +45,6 @@ router.get("/courses/:courseId", isAuth, userControllers.getCourse);
 
 router.get("/instructors/:instructorId", isAuth, userControllers.getInstructor);
 
+router.post("/post/add-comment", isAuth, userControllers.postAddComment);
+
 module.exports = router;

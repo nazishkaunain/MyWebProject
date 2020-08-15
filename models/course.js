@@ -44,6 +44,12 @@ const courseSchema = new Schema({
         ref: "User",
         //required: true
     }
+  ],
+  posts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Post"
+    }
   ]
 });
 
