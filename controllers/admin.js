@@ -268,15 +268,17 @@ exports.postAddOpinion = (req, res, next) => {
 
 exports.postAddPost = (req, res, next) => {
     const courseId = req.body.courseId;
-    const document = req.body.document;
+    const document = req.file;
     const title = req.body.title;
     const admin = req.user._id;
 
     console.log(document);
 
+    const documentUrl = document.path;
+
     const post = new Post({
         title: title,
-        document: document,
+        document: documentUrl,
         course: courseId,
         admin: admin,
         comments: []

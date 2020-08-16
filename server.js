@@ -8,6 +8,7 @@ const mongoDBStore = require("connect-mongodb-session")(session);
 const csrf = require('csurf');
 const flash = require("connect-flash");
 const env = require("dotenv").config();
+const multer = require("multer");
 
 const userRoutes = require(path.join(__dirname, "routes", "user"));
 const adminRoutes = require(path.join(__dirname, "routes", "admin"));
@@ -25,16 +26,25 @@ const store = new mongoDBStore({
 
 const csrfProtection = csrf();
 
-
-mongoose.set("useNewUrlParser", true);
-mongoose.set("useUnifiedTopology", true);
-mongoose.set("useFindAndModify", false);
-
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  }
+});
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === "image/png" || file.mimetype === "image/jpg" || file.mimetype === "image/jpeg") {
+    cb(null, true);
+  } else cb(null, false);
+}
 
 app.set("view engine", "ejs");
-
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(multer({ storage: fileStorage , fileFilter: fileFilter }).single("document"));  //document is the name of the field in the form which accepts the file
 app.use(express.static("public"));
+app.use("/images", express.static("images"));  //for storing the uploaded images
 
 app.use(session({
   secret: process.env.SECRET, //put it in .env file
@@ -80,8 +90,16 @@ app.use("/", (req, res, next) => {
 });
 
 mongoose
-  //.connect("mongodb://localhost:27017/projectDB")
-  .connect(process.env.DATABASE_API)
+  // .connect("mongodb://localhost:27017/projectDB", {
+  //   useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  //   useFindAndModify: false
+  // })
+  .connect(process.env.DATABASE_API, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+  })
   .then(result => {
     app.listen("5000");
   })
