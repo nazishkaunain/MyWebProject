@@ -20,7 +20,7 @@ const app = express();
 
 const store = new mongoDBStore({
   //uri: "mongodb://localhost:27017/projectDB",
-  uri: process.env.DATABASE_API,  //remove retryWrites at the end when using online mongoose
+  uri:process.env.DATABASE_API,  //remove retryWrites at the end when using online mongoose
   collection: "sessions"
 });
 
