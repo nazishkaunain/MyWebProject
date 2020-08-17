@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -7,7 +8,6 @@ const session = require("express-session");
 const mongoDBStore = require("connect-mongodb-session")(session);
 const csrf = require('csurf');
 const flash = require("connect-flash");
-const env = require("dotenv").config();
 const multer = require("multer");
 
 const userRoutes = require(path.join(__dirname, "routes", "user"));
