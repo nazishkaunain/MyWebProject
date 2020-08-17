@@ -101,7 +101,7 @@ mongoose
     useFindAndModify: false
   })
   .then(result => {
-    app.listen("5000");
+    app.listen("5000" || process.env.PORT );
   })
   .catch(err => {
     console.log(err);
