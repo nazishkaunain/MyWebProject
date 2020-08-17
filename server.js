@@ -48,7 +48,8 @@ app.use(express.static("public"));
 app.use("/images", express.static("images"));  //for storing the uploaded images
 
 app.use(session({
-  secret: process.env.SECRET, //put it in .env file
+  //secret: process.env.SECRET, //put it in .env file
+  secret: "mySecret",
   resave: false,
   saveUninitialized: false,
   store: store //it connects session to mongdb store
