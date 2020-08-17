@@ -20,7 +20,8 @@ const app = express();
 
 const store = new mongoDBStore({
   //uri: "mongodb://localhost:27017/projectDB",
-  uri:process.env.DATABASE_API,  //remove retryWrites at the end when using online mongoose
+  //uri:process.env.DATABASE_API,  //remove retryWrites at the end when using online mongoose
+  uri: "mongodb+srv://nazish-kaunain:Nazish@7670@cluster0-sihxr.mongodb.net/projectDB",
   collection: "sessions"
 });
 
@@ -95,7 +96,8 @@ mongoose
   //   useUnifiedTopology: true,
   //   useFindAndModify: false
   // })
-  .connect(process.env.DATABASE_API, {
+  //.connect(process.env.DATABASE_API, {
+  .connect("mongodb+srv://nazish-kaunain:Nazish@7670@cluster0-sihxr.mongodb.net/projectDB", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false
