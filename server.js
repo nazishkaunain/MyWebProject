@@ -20,8 +20,7 @@ const app = express();
 
 const store = new mongoDBStore({
   //uri: "mongodb://localhost:27017/projectDB",
-  //uri:process.env.DATABASE_API,  //remove retryWrites at the end when using online mongoose
-  uri: "mongodb+srv://nazish-kaunain:Nazish@7670@cluster0-sihxr.mongodb.net/projectDB",
+  uri:process.env.DATABASE_API,  //remove retryWrites at the end when using online mongoose
   collection: "sessions"
 });
 
@@ -48,8 +47,7 @@ app.use(express.static("public"));
 app.use("/images", express.static("images"));  //for storing the uploaded images
 
 app.use(session({
-  //secret: process.env.SECRET, //put it in .env file
-  secret: "mySecret",
+  secret: process.env.SECRET, //put it in .env file
   resave: false,
   saveUninitialized: false,
   store: store //it connects session to mongdb store
@@ -97,8 +95,7 @@ mongoose
   //   useUnifiedTopology: true,
   //   useFindAndModify: false
   // })
-  //.connect(process.env.DATABASE_API, {
-  .connect("mongodb+srv://nazish-kaunain:Nazish@7670@cluster0-sihxr.mongodb.net/projectDB", {
+  .connect(process.env.DATABASE_API, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false
