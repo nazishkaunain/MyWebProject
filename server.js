@@ -20,7 +20,7 @@ const app = express();
 
 const store = new mongoDBStore({
   //uri: "mongodb://localhost:27017/projectDB",
-  uri:process.env.DATABASE_API,  //remove retryWrites at the end when using online mongoose
+  uri: process.env.DATABASE_API,  //remove retryWrites at the end when using online mongoose
   collection: "sessions"
 });
 
@@ -101,7 +101,9 @@ mongoose
     useFindAndModify: false
   })
   .then(result => {
-    app.listen("5000" || process.env.PORT );
+    app.listen("3000" || process.env.PORT , ()=> {
+      console.log("The site is running live on port 3000");
+    });
   })
   .catch(err => {
     console.log(err);
