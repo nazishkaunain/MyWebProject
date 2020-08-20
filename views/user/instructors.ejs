@@ -7,11 +7,31 @@
 	<div class="container">
 			<h1 style="text-align:center; padding-top:120px;padding-bottom:30px;">All Instructors</h1>
 			<div class="row col-lg-12">
-    
+            
+                <style>
+					.instructor {padding-left: 15px; 
+  						padding-right:15px;
+  						padding-top:10px; 
+  						padding-bottom:10px; 
+  						margin-left:20px; 
+  						margin-right:20px; 
+  						margin-bottom:40px; 
+  						border-radius:3%;
+                    }
+                    
+                    @media only screen and (max-width: 600px;) {
+                        .instructor {
+                            padding-right:2px;
+                            padding-left:2px;
+                        }
+                        
+                    }
+                </style>
+                
                 <% instructors.map(instructor => { %>
                 
-                <div class="col-lg-4 col-md-4 col-12 card shadow" style="padding-top:10px; padding-bottom:20px; margin-left:20px; margin-right:20px; margin-bottom:40px;">
-
+                <div class="col-lg-4 col-md-6 col-12">
+                  <div class="card shadow instructor">  
                     <h3><%= instructor.name %></h3>
 
                     <!-- <h5 class="text-muted">Opinion about the instructor: <%= instructor.opinion %></h5> -->
@@ -34,8 +54,10 @@
                         </form> -->
                         <a href="/admin/edit-instructor/<%= instructor.id %>/?edit=true" class="btn btn-primary btn-block login-btn mb-4">Edit instructor</a>
                     <% } %>
-			
-			</div>
+
+                  </div>
+                </div>
+                
                 <% }); %>
              
       	</div>   	 <!-- div class row closed -->
