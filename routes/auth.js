@@ -29,4 +29,10 @@ router.get("/reset/:token", authController.getNewPassword);
 
 router.post("/new-password", authController.postNewPassword);
 
+router.post("/verify", isAuth, authController.postVerify);
+
+router.get("/verification/:token",isAuth, authController.getVerification);
+
+router.post("/verification", isAuth, authController.postVerification);
+
 module.exports = router;

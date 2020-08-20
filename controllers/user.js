@@ -53,12 +53,18 @@ exports.postBuildProfile = (req, res, next) => {
             user.yearOfGraduation = yearOfGraduation;
             user.birthday = birthday;
             user.gender = gender;
+            user.hasBuiltProfile = true;
 
             return user.save();
         })
         .then(result => {
             console.log("Successfully completed profile");
-            return res.redirect("/index");
+            req.session.hasBuiltProfile = true;
+            return req.session.save((err) => {
+                if(!err) {
+                  return res.redirect("/index");
+                } else console.log(err);
+              });
         })
         .catch(err => {
             console.log(err);

@@ -55,6 +55,8 @@ exports.postLogin = (req, res, next) => {
               
               req.session.isLoggedIn = true;
               req.session.isAdmin = user.isAdmin;
+              req.session.isVerified = user.isVerified;
+              req.session.hasBuiltProfile = user.hasBuiltProfile;
               req.session.user = user;
               
               console.log(req.session);
@@ -130,7 +132,9 @@ exports.postSignup = (req, res, next) => {
               name: name,
               email: email,
               password: hashedPassword,
-              isAdmin: false
+              isAdmin: false,
+              isVerified: false,
+              hasBuiltProfile: false
           });
           return newUser.save();
         })
@@ -256,6 +260,102 @@ exports.postNewPassword = (req, res, next) => {
     })
     .then(result => {
       return res.redirect("/login");
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+
+//to provide the verifyToken when the user clicks on the button to verify himself
+exports.postVerify = (req, res, next) => {
+  console.log("Into post veriy");
+  console.log(req.user);
+  crypto.randomBytes(32, (err, buffer) => {
+    if(err) {
+      console.log(err);
+      return res.redirect("/index");
+    }
+    //the buffer will be generated
+    const token = buffer.toString("hex");  //the buffer is in hexadecimal
+    User.findById(req.user._id)
+      .then(user => {
+        user.verifyToken = token;
+        user.verifyTokenExpiration = Date.now() + 3600000;  //today's date plus 1hour in miliseconds
+        return user.save();
+      })
+      .then(result => {
+        return transporter.sendMail({ ///you can alse return transporter.sendMail.... if you want to redirect to the login
+          // only after the mail has been sent
+          to: req.user.email,
+          from: "kaunainnazish@gmail.com",
+          subject: "Verification mail",
+          //html contains the message you wanna send
+          //back ticks ` ` is a next gen js which allows you to write a whole bunch of html codes
+          //${} is used to inject a variable when using back ticks
+          html: `
+            <p>Verify your email</p>
+            <p>Click this <a href="http://localhost:3000/verification/${token}">link</a> to verify yourself</p>
+            <p>If it was not you, please contact us</p>
+          `
+        });
+      }).
+      then(result => {
+        //let the user know that a mail has been sent
+        return res.redirect("/");
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  })
+}
+
+//the page to be displayed when the user follows the link to verify
+exports.getVerification = (req, res, next) => {
+  const token = req.params.token;
+  //only when token matches
+  //and the expiration date is greater than now
+  User.findOne({"verifyToken": token, "verifyTokenExpiration":{$gt: Date.now()}})
+    .then(user => {
+      //also do a check here that if no such token exists , then display an error
+
+      res.render("auth/verification", {
+        path: "/verification",
+        pageTitle: "Verify yourself",
+        userId: user._id.toString(), //to convert from objectId  type to normal string
+        verifyToken: token
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+exports.postVerification = (req, res, next) => {
+  const email = req.body.email;
+  const userId = req.body.userId;
+  const verifyToken = req.body.verifyToken;
+
+
+  User.findOne({ "verifyToken": verifyToken, "verifyTokenExpiration": { $gt: Date.now() }, _id: userId, "email": email })
+    .then(user => {
+      if (!user) {
+        //and maybe an alert box to show that your details were wrong
+        return res.redirect("/index");
+      }
+      user.isVerified = true;
+      user.resetToken = undefined;  //deactivating the token after successfull password change
+      userTokenExpiration = undefined;
+      return user.save();
+    })
+    .then(() => {
+      //and maybe with a message that you have been successfully verified
+      req.session.isVerified = true;
+      return req.session.save((err) => {
+        if(!err) {
+          return res.redirect("/index");
+        } else console.log(err);
+      });
     })
     .catch(err => {
       console.log(err);
