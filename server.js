@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -7,7 +8,6 @@ const session = require("express-session");
 const mongoDBStore = require("connect-mongodb-session")(session);
 const csrf = require('csurf');
 const flash = require("connect-flash");
-const env = require("dotenv").config();
 const multer = require("multer");
 
 const userRoutes = require(path.join(__dirname, "routes", "user"));
@@ -19,8 +19,8 @@ const User = require(path.join(__dirname, "models", "user"));
 const app = express();
 
 const store = new mongoDBStore({
-  //uri: "mongodb://localhost:27017/projectDB",
-  uri:process.env.DATABASE_API,  //remove retryWrites at the end when using online mongoose
+  uri: "mongodb://localhost:27017/projectDB",
+  //uri: process.env.DATABASE_API,  //remove retryWrites at the end when using online mongoose
   collection: "sessions"
 });
 
@@ -77,6 +77,8 @@ app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;
   res.locals.isAdmin = req.session.isAdmin;
   res.locals.csrfToken = req.csrfToken();
+  res.locals.isVerified = req.session.isVerified;
+  res.locals.hasBuiltProfile = req.session.hasBuiltProfile;
   next();
 });
 
@@ -90,18 +92,18 @@ app.use("/", (req, res, next) => {
 });
 
 mongoose
-  // .connect("mongodb://localhost:27017/projectDB", {
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true,
-  //   useFindAndModify: false
-  // })
-  .connect(process.env.DATABASE_API, {
+  .connect("mongodb://localhost:27017/projectDB", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false
   })
+  // .connect(process.env.DATABASE_API, {
+  //   useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  //   useFindAndModify: false
+  // })
   .then(result => {
-    app.listen("5000");
+    app.listen("3000");
   })
   .catch(err => {
     console.log(err);

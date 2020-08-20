@@ -6,6 +6,10 @@ const userControllers = require(path.join(__dirname, "..", "controllers", "user.
 
 const isAuth = require(path.join(__dirname, "..", "middleware", "is-auth.js"));
 
+const isVerified = require(path.join(__dirname, "..", "middleware", "is-verified"));
+
+const hasBuiltProfile = require(path.join(__dirname, '..', "middleware", "has-built-profile"));
+
 
 const router = express.Router();
 
@@ -21,30 +25,30 @@ router.get("/", userControllers.getHome);
 //with all the functionalities available
 router.get("/index", isAuth,  userControllers.getIndex);
 
-router.get("/build-profile", isAuth, userControllers.getBuildProfile);
+router.get("/build-profile", isAuth, isVerified, userControllers.getBuildProfile);
 
-router.post("/build-profile", isAuth, userControllers.postBuildProfile);
+router.post("/build-profile", isAuth, isVerified, userControllers.postBuildProfile);
 
-router.get("/edit-profile/:userId", isAuth, userControllers.getEditProfile);
+router.get("/edit-profile/:userId", isAuth, hasBuiltProfile, isVerified, userControllers.getEditProfile);
 
 //router.post("/edit-profile", isAuth, userControllers.postEditProfile);
 
-router.get("/my-profile", isAuth, userControllers.getProfile);
+router.get("/my-profile", isAuth, hasBuiltProfile, isVerified, userControllers.getProfile);
 
 router.get("/get-courses", isAuth, userControllers.getCourses);
 
 router.get("/get-instructors", isAuth, userControllers.getInstructors);
 
-router.post("/follow-courses", isAuth, userControllers.followCourses);
+router.post("/follow-courses", isAuth, hasBuiltProfile, isVerified, userControllers.followCourses);
 
-router.get("/get-my-courses", isAuth, userControllers.getMyCourses);
+router.get("/get-my-courses", isAuth, hasBuiltProfile, isVerified, userControllers.getMyCourses);
 
-router.post("/unfollow-course", isAuth, userControllers.unfollowCourse);
+router.post("/unfollow-course", isAuth, hasBuiltProfile, isVerified, userControllers.unfollowCourse);
 
 router.get("/courses/:courseId", isAuth, userControllers.getCourse);
 
 router.get("/instructors/:instructorId", isAuth, userControllers.getInstructor);
 
-router.post("/post/add-comment", isAuth, userControllers.postAddComment);
+router.post("/post/add-comment", isAuth, hasBuiltProfile, isVerified, userControllers.postAddComment);
 
 module.exports = router;

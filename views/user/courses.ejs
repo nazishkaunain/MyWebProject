@@ -33,12 +33,13 @@
 								<h6 class="text-muted"><%= course.instructor.name %></h6>
 						</p>
 
+						<% if(hasBuiltProfile && isVerified) { %>
 							<% let flag = false %>
 								<% userCourses.map(userCourse => { %>
 								<% console.log(userCourse); %>
 							<% if(userCourse._id.toString() === course._id.toString()) { %>
 								<% flag = true; %>
-						<h1 class="btn btn-primary btn-block login-btn mb-4">You already follow this course</h1>
+						        <h1 class="btn btn-primary btn-block login-btn mb-4">You already follow this course</h1>
 							<% } %>
 							<% }) %>
 							<% if(!flag) { %>
@@ -52,6 +53,7 @@
 									</button>
 								</form>
 							<% } %>
+						<% } %>
                     
 								<!-- <form action="/follow-courses" method="POST">
 									<input type="hidden" name="courseId" value="<%= course._id %>">

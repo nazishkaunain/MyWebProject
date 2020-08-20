@@ -19,6 +19,18 @@ const userSchema = new Schema({
         type: Boolean,
         required: true
     },
+    hasBuiltProfile: {
+        type: Boolean
+    },
+    isVerified: {
+        type: Boolean
+    },
+    verifyToken: {
+        type: String
+    },
+    verifyTokenExpiration: {
+        type: String
+    },
     resetToken: {
       type: String
     },

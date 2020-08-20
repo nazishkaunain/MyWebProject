@@ -5,19 +5,27 @@
 
       <!-- h1 class="logo mr-auto"><a href="/">EDUGUIDE</a></h1 -->
       <!-- Uncomment below if you prefer to use an image logo -->
-      <a href="index" class="logo mr-auto"><img src="./img/logo/logo.png" alt="EDUGUIDE" class="img-fluid"></a>
+      <a href="index" class="logo mr-auto"><img src="/img/logo/logo.png" alt="EDUGUIDE" class="img-fluid"></a>
 
       <nav class="nav-menu d-none d-lg-block">
         <ul>
           <li><a href="/">Home</a></li>
           <li><a href="#about">About</a></li>
 
-          <% if(isAuthenticated) { %>
-            <li><a href="/build-profile">Build Profile</a></li>
+          <% if(isAuthenticated) { %> 
+            <% if(!hasBuiltProfile) { %>
+              <li class="<% if(path === '/build-profile') { %>active<% } %>"><a href="/build-profile">Build Profile</a></li>
+            <% } %>
             <li class="<% if(path === '/my-profile') { %>active<% } %>"><a href="/my-profile">Profile</a></li>
             <li class="<% if(path === '/get-my-courses') { %>active<% } %>"><a href="/get-my-courses">My Courses</a></li>
             <li class="<% if(path === '/get-courses') {%>active<% } %>"><a href="/get-courses">All Courses</a></li>
             <li class="<% if(path === '/get-instructors') {%>active<% } %>"><a href="/get-instructors">All Instructors</a></li>
+            <% if(!isVerified) { %>
+              <form action="/verify" method="post">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button type="submit" class="get-started-btn" name="button">Verify</button>
+              </form>
+            <% } %>
             <% if(isAdmin) { %>
               <li class="drop-down"><a href="">ADMIN</a>
                 <ul>
