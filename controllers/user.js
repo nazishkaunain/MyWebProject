@@ -43,6 +43,7 @@ exports.postBuildProfile = (req, res, next) => {
     const yearOfGraduation = req.body.yearOfGraduation;
     const birthday = req.body.birthday;
     const gender = req.body.gender;
+    const name = req.body.name;
 
   
 
@@ -53,6 +54,7 @@ exports.postBuildProfile = (req, res, next) => {
             user.yearOfGraduation = yearOfGraduation;
             user.birthday = birthday;
             user.gender = gender;
+            user.name = name;
             user.hasBuiltProfile = true;
 
             return user.save();

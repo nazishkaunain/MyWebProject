@@ -14,7 +14,7 @@
 						<div class="col-lg-6 col-md-6">
             
 						<!-- The user profile photo will come here -->
-								<div class="row">
+								<!-- <div class="row">
 									<div class="col-lg-1"></div>	
 									<div class="col-lg-4">	
 										<div class="brand-wrapper">
@@ -22,16 +22,22 @@
 										</div>
 									</div>	
 									<div class="col-lg-1"></div>
-								</div>
+								</div> -->
              
 								<p class="login-card-description">Your Profile</p>
 
-							<form action="<% if(editMode) { %>/edit-profile<% } else { %>/build-profile<% } %>" method="POST">
+              <form action="<% if(editMode) { %>/edit-profile<% } else { %>/build-profile<% } %>" method="POST">
+                
+
+                    <div class="form-group">
+                        <label for="profilePic">Uplaod profile picture( Select .jpeg / .jpg /.png file )</label>
+                        <input type="file" name="profilePic" id="profilePic">
+                    </div>
 
 										<!-- The user name ( pass her the user name too ) -->
 										<div class="form-group">
 												<label for="name" class="sr-only">Name</label>
-												<input type="name" name="name" id="name" class="form-control" placeholder="Name" value="<% if(editMode) {%><%= user.name %><%} else {%><%= name %><% } %>">
+												<input type="text" name="name" id="name" class="form-control" placeholder="Name" value="<% if(editMode) {%><%= user.name %><%} else {%><%= name %><% } %>">
 										</div>
                     
 										<!-- for the degree like Btech , Mtech etc ||| Just change the degree further -->

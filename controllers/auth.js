@@ -344,8 +344,8 @@ exports.postVerification = (req, res, next) => {
         return res.redirect("/index");
       }
       user.isVerified = true;
-      user.resetToken = undefined;  //deactivating the token after successfull password change
-      userTokenExpiration = undefined;
+      user.verifyToken = undefined;  //deactivating the token after successfull password change
+      user.verifyTokenExpiration = undefined;
       return user.save();
     })
     .then(() => {
