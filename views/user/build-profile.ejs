@@ -13,16 +13,20 @@
      
 						<div class="col-lg-6 col-md-6">
             
-						<!-- The user profile photo will come here -->
-								<!-- <div class="row">
-									<div class="col-lg-1"></div>	
-									<div class="col-lg-4">	
-										<div class="brand-wrapper">
-											<img src="https://vibhanshujainiiitr.github.io/img/me.jpeg" alt="Profile Pic" class="logo" style="border-radius:20%; width:100%; height:150px;">
-										</div>
-									</div>	
-									<div class="col-lg-1"></div>
-								</div> -->
+            <!--The user profile photo will come here -->
+            <% if(editMode) { %>
+              <div class="row">
+                <div class="col-lg-1"></div>	
+                <div class="col-lg-4">	
+                  <div class="brand-wrapper">
+                    <img src="/<%= user.profilePic %>" alt="Profile Pic" class="logo" style="border-radius:20%; width:100%; height:150px;">
+                  </div>
+                </div>	
+                <div class="col-lg-1"></div>
+              </div>
+            <% } %>
+            
+					
              
 								<p class="login-card-description">Your Profile</p>
 
