@@ -38,6 +38,7 @@ exports.getBuildProfile = (req, res, next) => {
 };
 
 exports.postBuildProfile = (req, res, next) => {
+    const profilePic = req.file
     const degree = req.body.degree;
     const department = req.body.department;
     const yearOfGraduation = req.body.yearOfGraduation;
@@ -45,7 +46,7 @@ exports.postBuildProfile = (req, res, next) => {
     const gender = req.body.gender;
     const name = req.body.name;
 
-  
+    const profilePicUrl = profilePic.path;
 
     User.findById(req.user._id)
         .then(user => {
@@ -56,6 +57,7 @@ exports.postBuildProfile = (req, res, next) => {
             user.gender = gender;
             user.name = name;
             user.hasBuiltProfile = true;
+            user.profilePic = profilePicUrl;
 
             return user.save();
         })
