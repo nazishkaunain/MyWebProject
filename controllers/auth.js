@@ -205,7 +205,7 @@ exports.postReset = (req, res, next) => {
           //${} is used to inject a variable when using back ticks
           html: `
             <p>You requested a password change</p>
-            <p>Click this <a href="http://localhost:3000/reset/${token}">link</a> to set a new password</p>
+            <p>Click this <a href="https://thawing-retreat-85407.herokuapp.com/reset/${token}">link</a> to set a new password</p>
             <p>If it was not you, please contact use</p>
           `
         });
@@ -295,7 +295,7 @@ exports.postVerify = (req, res, next) => {
           //${} is used to inject a variable when using back ticks
           html: `
             <p>Verify your email</p>
-            <p>Click this <a href="http://localhost:3000/verification/${token}">link</a> to verify yourself</p>
+            <p>Click this <a href="https://thawing-retreat-85407.herokuapp.com/verification/${token}">link</a> to verify yourself</p>
             <p>If it was not you, please contact us</p>
           `
         });
