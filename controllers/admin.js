@@ -13,6 +13,20 @@ const Instructor = require(path.join(
     "instructor.js"
 ));
 
+exports.getUsers = (req, res, next) => {
+    User.find()
+        .then(users => {
+            return res.render("admin/users", {
+                pageTitle: "Users",
+                path: "/admin/get-users",
+                users: users
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
+
 exports.getAddCourse = (req, res, next) => {
     Instructor.find()
         .then((instructors) => {

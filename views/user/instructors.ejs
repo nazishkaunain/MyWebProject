@@ -34,7 +34,7 @@
                   <div class="card shadow instructor">  
                     <h3><%= instructor.name %></h3>
 
-                    <!-- <h5 class="text-muted">Opinion about the instructor: <%= instructor.opinion %></h5> -->
+        
                     <h5 class="text-muted">Courses Offered</h5>
                     
                     <ul>
@@ -46,12 +46,7 @@
                     <a class="btn btn-primary btn-block login-btn mb-4" href="/instructors/<%= instructor._id %>">View instructor</a>
 
                     <% if(isAdmin) { %>
-                        <!-- <form action="/admin/edit-instructor" method="post">
-                            
-                            <input type="hidden" name="instructorId" value="<%= instructor._id %>">
-                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                            <button class="btn btn-block login-btn mb-4" type="submit">Edit instructor</button> 
-                        </form> -->
+                  
                         <a href="/admin/edit-instructor/<%= instructor.id %>/?edit=true" class="btn btn-primary btn-block login-btn mb-4">Edit instructor</a>
                     <% } %>
 

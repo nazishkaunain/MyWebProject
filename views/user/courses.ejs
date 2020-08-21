@@ -55,21 +55,9 @@
 							<% } %>
 						<% } %>
                     
-								<!-- <form action="/follow-courses" method="POST">
-									<input type="hidden" name="courseId" value="<%= course._id %>">
-        
-									<input type="hidden" name="_csrf" value="<%= csrfToken %>">
-									<button class="btn btn-block login-btn mb-4" type="submit">                            
-										Follow course
-									</button>
-								</form> -->
 
-							<% if(isAdmin) { %>
-								<!-- <form action="/admin/edit-course" method="post">
-									<input type="hidden" name="courseId" value="<%= course._id %>">
-									<input type="hidden" name="_csrf" value="<%= csrfToken %>">
-									<button class="btn btn-block login-btn mb-4" type="submit">Edit Course</button> 
-								</form> -->
+						<% if(isAdmin) { %>
+					
 
 						<a href="/admin/edit-course/<%= course.id %>/?edit=true" class="btn btn-primary btn-block login-btn mb-4">Edit</a>
 						<a class="btn btn-primary btn-block login-btn mb-4" href="/courses/<%= course._id %>">View Course</a>
