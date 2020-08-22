@@ -17,7 +17,7 @@ router.get("/login", isNotAuth, authController.getLogin);
 
 router.post("/login", isNotAuth, authController.postLogin);
 
-router.post("/logout", isNotAuth, authController.postLogout);
+router.post("/logout", isAuth, authController.postLogout);
 
 router.get("/signup", isNotAuth, authController.getSignup);
 

@@ -106,6 +106,45 @@ exports.getEditProfile = (req, res, next) => {
     
 }
 
+//also you have to delete the previous image or store somewhere
+exports.postEditProfile = (req, res, next) => {
+    const updatedProfilePic = req.file
+    const updatedDegree = req.body.degree;
+    const updatedDepartment = req.body.department;
+    const updatedYearOfGraduation = req.body.yearOfGraduation;
+    const updatedBirthday = req.body.birthday;
+    const updatedGender = req.body.gender;
+    const updatedName = req.body.name;
+
+    const updatedProfilePicUrl = updatedProfilePic.path;
+
+    User.findById(req.user._id)
+        .then(user => {
+            user.degree = updatedDegree;
+            user.department = updatedDepartment;
+            user.yearOfGraduation = updatedYearOfGraduation;
+            user.birthday = updatedBirthday;
+            user.gender = updatedGender;
+            user.name = updatedName;
+            user.profilePic = updatedProfilePicUrl;
+
+            return user.save();
+        })
+        .then(result => {
+            console.log("Successfully updated profile");
+
+            return req.session.save((err) => {
+                if(!err) {
+                  return res.redirect("/index");
+                } else console.log(err);
+              });
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    
+};
+
 exports.getCourses = (req, res, next) => {
     Course
         .find()
