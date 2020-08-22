@@ -9,17 +9,19 @@ const authController = require(path.join(__dirname, "..", "controllers", "auth.j
 
 const isAuth = require(path.join(__dirname, "..", "middleware", "is-auth.js"));
 
+const isNotAuth = require(path.join(__dirname, "..", "middleware", "is-not-auth"));
+
 //It has been arranged according to the alphabetical order of the name of routes
 
-router.get("/login", authController.getLogin);
+router.get("/login", isNotAuth, authController.getLogin);
 
-router.post("/login", authController.postLogin);
+router.post("/login", isNotAuth, authController.postLogin);
 
-router.post("/logout", authController.postLogout);
+router.post("/logout", isNotAuth, authController.postLogout);
 
-router.get("/signup", authController.getSignup);
+router.get("/signup", isNotAuth, authController.getSignup);
 
-router.post("/signup", authController.postSignup);
+router.post("/signup", isNotAuth, authController.postSignup);
 
 router.get("/reset", authController.getReset);
 

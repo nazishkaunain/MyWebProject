@@ -75,7 +75,9 @@ http://www.templatemo.com/tm-471-zigzag
                                     
                                     <p>This is the platform where you can find and add all the assignments and question papers of several courses that will help others.</p>
                                     
-                                    <a href="login" class="button">Login</a>
+                                    <% if(!isAuthenticated) { %>
+                                        <a href="login" class="button">Login</a>
+                                    <% } %>
                                 
                                 </div>
 
@@ -97,7 +99,10 @@ http://www.templatemo.com/tm-471-zigzag
                                     
                                     <p>Login / Create your account, follow your courses, and upload the assignments/question papers. Comment and Download the previously posted material. Keep updating regularly and help others to get the appropriate content.</p>
                                     
-                                    <a href="signup" class="button">Sign Up</a>
+                                    <% if(!isAuthenticated) { %>
+                                        <a href="signup" class="button">Sign Up</a>
+                                    <% } %>
+                                    
                                 
                                 </div>
                            
