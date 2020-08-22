@@ -15,7 +15,7 @@ const isAdmin = require(path.join(__dirname, "..", "middleware", "is-admin.js"))
 //admin/home => GET
 //it will direct the user to the home page for the admin
 // router.get("/home", adminControllers.getAdminHome);
-
+router.get("/get-users", isAuth, isAdmin, adminControllers.getUsers);
 
 router.get("/add-course", isAuth, isAdmin, adminControllers.getAddCourse);
 
