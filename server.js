@@ -1,4 +1,4 @@
-//require("dotenv").config();
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -9,6 +9,9 @@ const mongoDBStore = require("connect-mongodb-session")(session);
 const csrf = require('csurf');
 const flash = require("connect-flash");
 const multer = require("multer");
+const imagemin = require('imagemin');
+const imageminJpegtran = require('imagemin-jpegtran');
+const imageminPngquant = require('imagemin-pngquant');
 
 const userRoutes = require(path.join(__dirname, "routes", "user"));
 const adminRoutes = require(path.join(__dirname, "routes", "admin"));
@@ -19,8 +22,8 @@ const User = require(path.join(__dirname, "models", "user"));
 const app = express();
 
 const store = new mongoDBStore({
-  //uri: "mongodb://localhost:27017/projectDB",
-  uri: process.env.DATABASE_API,  //remove retryWrites at the end when using online mongoose
+  uri: "mongodb://localhost:27017/projectDB",
+  //uri: process.env.DATABASE_API,  //remove retryWrites at the end when using online mongoose
   collection: "sessions"
 });
 
@@ -45,6 +48,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multer({ storage: fileStorage , fileFilter: fileFilter }).single("document"));  //document is the name of the field in the form which accepts the file
 app.use(express.static("public"));
 app.use("/images", express.static("images"));  //for storing the uploaded images
+app.use("/compressedImages", express.static("compressedImages"));
 
 app.use(session({
   secret: process.env.SECRET, //put it in .env file
@@ -92,16 +96,16 @@ app.use("/", (req, res, next) => {
 });
 
 mongoose
-  // .connect("mongodb://localhost:27017/projectDB", {
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true,
-  //   useFindAndModify: false
-  // })
-  .connect(process.env.DATABASE_API, {
+  .connect("mongodb://localhost:27017/projectDB", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false
   })
+  // .connect(process.env.DATABASE_API, {
+  //   useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  //   useFindAndModify: false
+  // })
   .then(result => {
     app.listen(process.env.PORT || "3000");
   })

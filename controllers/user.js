@@ -2,6 +2,7 @@ const path = require("path");
 const course = require("../models/course");
 const { render } = require("ejs");
 const { populate } = require("../models/course");
+const { deleteFile } = require("../util/file");
 
 const User = require(path.join(__dirname, "..", "models", "user.js"));
 
@@ -11,10 +12,16 @@ const Instructor = require(path.join(__dirname, "..", "models", "instructor.js")
 
 const Post = require(path.join(__dirname, "..", "models", "post"));
 
+const fileHelper = require(path.join(__dirname, "..", "util", "file"));
+
+const imagemin = require('imagemin');
+const imageminJpegtran = require('imagemin-jpegtran');
+const imageminPngquant = require('imagemin-pngquant');
+
 exports.getHome = (req, res, next) => {
     res.render("user/home", {
         pageTitle: "Home Page",
-        path : "/"
+        path: "/"
     });
 };
 
@@ -46,7 +53,30 @@ exports.postBuildProfile = (req, res, next) => {
     const gender = req.body.gender;
     const name = req.body.name;
 
-    const profilePicUrl = profilePic.path;
+    //const profilePicUrl = profilePic.path;
+    let profilePicUrl;
+
+    console.log("filename: ", profilePic.filename);
+
+    (async () => {
+        const files = await imagemin(['images/' + profilePic.filename], {
+            destination: 'compressedImages',
+            plugins: [
+                imageminJpegtran(),
+                imageminPngquant({
+                    quality: [0.5, 0.6]
+                })
+            ]
+        });
+
+        //documentUrl = files[0].destinationPath;
+        fileHelper.deleteFile(profilePic.path); //deleting the original uploaded image
+
+        console.log(files);
+        //=> [{data: <Buffer 89 50 4e …>, destinationPath: 'build/images/foo.jpg'}, …]
+    })();
+
+    profilePicUrl = "compressedImages\\" + profilePic.filename;
 
     User.findById(req.user._id)
         .then(user => {
@@ -65,15 +95,15 @@ exports.postBuildProfile = (req, res, next) => {
             console.log("Successfully completed profile");
             req.session.hasBuiltProfile = true;
             return req.session.save((err) => {
-                if(!err) {
-                  return res.redirect("/index");
+                if (!err) {
+                    return res.redirect("/index");
                 } else console.log(err);
-              });
+            });
         })
         .catch(err => {
             console.log(err);
         });
-    
+
 };
 
 exports.getProfile = (req, res, next) => {
@@ -103,7 +133,7 @@ exports.getEditProfile = (req, res, next) => {
         editMode: editMode,
         user: req.user
     })
-    
+
 }
 
 //also you have to delete the previous image or store somewhere
@@ -116,7 +146,32 @@ exports.postEditProfile = (req, res, next) => {
     const updatedGender = req.body.gender;
     const updatedName = req.body.name;
 
-    const updatedProfilePicUrl = updatedProfilePic.path;
+    let updatedProfilePicUrl;
+
+    if (updatedProfilePic) {
+
+        console.log("filename: ", updatedProfilePic.filename);
+
+        (async () => {
+            const files = await imagemin(['images/' + updatedProfilePic.filename], {
+                destination: 'compressedImages',
+                plugins: [
+                    imageminJpegtran(),
+                    imageminPngquant({
+                        quality: [0.5, 0.6]
+                    })
+                ]
+            });
+
+            //documentUrl = files[0].destinationPath;
+            fileHelper.deleteFile(updatedProfilePic.path); //deleting the original uploaded image
+
+            console.log(files);
+            //=> [{data: <Buffer 89 50 4e …>, destinationPath: 'build/images/foo.jpg'}, …]
+        })();
+
+        updatedProfilePicUrl = "compressedImages\\" + updatedProfilePic.filename;
+    }
 
     User.findById(req.user._id)
         .then(user => {
@@ -126,7 +181,11 @@ exports.postEditProfile = (req, res, next) => {
             user.birthday = updatedBirthday;
             user.gender = updatedGender;
             user.name = updatedName;
-            user.profilePic = updatedProfilePicUrl;
+
+            if (updatedProfilePic) {
+                fileHelper.deleteFile(user.profilePic);
+                user.profilePic = updatedProfilePicUrl;        
+            }
 
             return user.save();
         })
@@ -134,15 +193,15 @@ exports.postEditProfile = (req, res, next) => {
             console.log("Successfully updated profile");
 
             return req.session.save((err) => {
-                if(!err) {
-                  return res.redirect("/index");
+                if (!err) {
+                    return res.redirect("/index");
                 } else console.log(err);
-              });
+            });
         })
         .catch(err => {
             console.log(err);
         });
-    
+
 };
 
 exports.getCourses = (req, res, next) => {
@@ -162,11 +221,11 @@ exports.getCourses = (req, res, next) => {
         .catch(err => {
             console.log(err);
         })
-    
+
 }
 
 exports.getInstructors = (req, res, next) => {
- 
+
     Instructor.find()
         .populate("courses")
         .exec()
@@ -253,12 +312,13 @@ exports.getCourse = (req, res, next) => {
             //let arrayPosts = JSON.stringify(course.posts);
             //arrayPosts = JSON.parse(arrayPosts);
             //console.log(arrayPosts);
+            //console.log(course.posts);
             return res.render("user/course", {
                 pageTitle: course.name,
-                path:"/courses/"+courseId,
+                path: "/courses/" + courseId,
                 course: course,
                 instructor: course.instructor,
-                posts : course.posts
+                posts: course.posts
             });
         })
         .catch(err => {
@@ -273,7 +333,6 @@ exports.getInstructor = (req, res, next) => {
         .populate("courses")
         .exec()
         .then(instructor => {
-            console.log(instructor);
             return res.render("user/instructor", {
                 pageTitle: instructor.name,
                 path: "/instructors/" + instructorId,
@@ -296,7 +355,6 @@ exports.postAddComment = (req, res, next) => {
 
     Post.findById(postId)
         .then(post => {
-            console.log(post);
             post.comments.push({ comment: comment, user: user });
             return post.save();
         })

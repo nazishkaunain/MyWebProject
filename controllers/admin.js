@@ -6,6 +6,12 @@ const Course = require(path.join(__dirname, "..", "models", "course.js"));
 
 const Post = require(path.join(__dirname, "..", "models", "post"));
 
+const fileHelper = require(path.join(__dirname, "..", "util", "file"));
+
+const imagemin = require('imagemin');
+const imageminJpegtran = require('imagemin-jpegtran');
+const imageminPngquant = require('imagemin-pngquant');
+
 const Instructor = require(path.join(
     __dirname,
     "..",
@@ -143,40 +149,6 @@ exports.postEditCourse = (req, res, next) => {
     const updatedCourseCode = req.body.courseCode;
     const updatedInstructor = req.body.instructor;
 
-    console.log(courseId);
-    console.log(updatedName);
-    console.log(updatedCourseCode);
-    console.log(updatedInstructor);
-    console.log("abc");
-
-
-    // Course.findById(courseId)
-    //     .then((course) => {
-    //         if (course.instructor.toString() !== updatedInstructor.toString()) {
-    //             Instructor.findById(course.instructor)
-    //                 .then((prevInstructor) => {
-    //                     const updatedCourses = prevInstructor.courses.filter(
-    //                         (course) => course._id.toString() !== courseId
-    //                     );
-    //                     prevInstructor.courses = updatedCourses;
-    //                     prevInstructor.save();
-    //                 })
-    //                 .catch((err) => {
-    //                     console.log("error1 happened");
-    //                     console.log(err);
-    //                 });
-    //             Instructor.findById(updatedInstructor)
-    //                 .then((instructor) => {
-    //                     instructor.courses.push(course._id);
-    //                     instructor.save();
-    //                 })
-    //                 .catch((err) => {
-    //                     console.log("error2 happended");
-    //                     console.log(err);
-    //                 });
-    //         }
-    //     })
-
     Course.findByIdAndUpdate(courseId, {
             name: updatedName,
             courseCode: updatedCourseCode,
@@ -288,7 +260,33 @@ exports.postAddPost = (req, res, next) => {
 
     console.log(document);
 
-    const documentUrl = document.path;
+    let documentUrl;
+
+    //const documentUrl = document.path;
+
+    console.log("filename: ", document.filename);
+
+    (async () => {
+        const files = await imagemin(['images/' + document.filename], {
+            destination: 'compressedImages',
+            plugins: [
+                imageminJpegtran(),
+                imageminPngquant({
+                    quality: [0.5, 0.6]
+                })
+            ]
+        });
+
+        //documentUrl = files[0].destinationPath;
+        fileHelper.deleteFile(document.path); //deleting the original uploaded image
+     
+        console.log(files);
+        //=> [{data: <Buffer 89 50 4e …>, destinationPath: 'build/images/foo.jpg'}, …]
+    })();
+
+    documentUrl = "compressedImages\\" + document.filename;
+
+    console.log(documentUrl);
 
     const post = new Post({
         title: title,
