@@ -183,7 +183,9 @@ exports.postEditProfile = (req, res, next) => {
             user.name = updatedName;
 
             if (updatedProfilePic) {
-                fileHelper.deleteFile(user.profilePic);
+                if (user.profilePic) {
+                    fileHelper.deleteFile(user.profilePic);
+                } 
                 user.profilePic = updatedProfilePicUrl;        
             }
 
