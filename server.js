@@ -22,8 +22,8 @@ const User = require(path.join(__dirname, "models", "user"));
 const app = express();
 
 const store = new mongoDBStore({
-  uri: "mongodb://localhost:27017/projectDB",
-  //uri: process.env.DATABASE_API,  //remove retryWrites at the end when using online mongoose
+  //uri: "mongodb://localhost:27017/projectDB",
+  uri: process.env.DATABASE_API,  //remove retryWrites at the end when using online mongoose
   collection: "sessions"
 });
 
@@ -96,16 +96,16 @@ app.use("/", (req, res, next) => {
 });
 
 mongoose
-  .connect("mongodb://localhost:27017/projectDB", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false
-  })
-  // .connect(process.env.DATABASE_API, {
+  // .connect("mongodb://localhost:27017/projectDB", {
   //   useNewUrlParser: true,
   //   useUnifiedTopology: true,
   //   useFindAndModify: false
   // })
+  .connect(process.env.DATABASE_API, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+  })
   .then(result => {
     app.listen(process.env.PORT || "3000");
   })
