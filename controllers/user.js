@@ -12,6 +12,8 @@ const Instructor = require(path.join(__dirname, "..", "models", "instructor.js")
 
 const Post = require(path.join(__dirname, "..", "models", "post"));
 
+const Message = require(path.join(__dirname, "..", "models", "message"));
+
 const fileHelper = require(path.join(__dirname, "..", "util", "file"));
 
 const imagemin = require('imagemin');
@@ -31,6 +33,38 @@ exports.getIndex = (req, res, next) => {
         path: "/index"
     });
 };
+
+exports.postHome = (req, res, next) => {
+    const name = req.body.name;
+    const email = req.body.email;
+    const message = req.body.email;
+
+    const newMessage = new Message({
+        name: name,
+        email: email,
+        message: message,
+    });
+    newMessage.save()
+        .then(() => {
+            res.redirect("/");
+        })
+}
+
+exports.postIndex = (req, res, next) => {
+    const name = req.body.name;
+    const email = req.body.email;
+    const message = req.body.email;
+
+    const newMessage = new Message({
+        name: name,
+        email: email,
+        message: message,
+    });
+    newMessage.save()
+        .then(() => {
+            res.redirect("/index");
+        })
+}
 
 exports.getBuildProfile = (req, res, next) => {
 

@@ -53,4 +53,8 @@ router.get("/instructors/:instructorId", isAuth, userControllers.getInstructor);
 
 router.post("/post/add-comment", isAuth, hasBuiltProfile, isVerified, userControllers.postAddComment);
 
+router.post("/", userControllers.postHome);
+
+router.post("/index", userControllers.postIndex);
+
 module.exports = router;

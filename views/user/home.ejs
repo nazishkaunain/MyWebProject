@@ -211,9 +211,9 @@ http://www.templatemo.com/tm-471-zigzag
                             
                             <h3>contact <span>us</span></h3>
                         
-                            <form method="post" action="#">
+                            <form method="post" action="/">
                                 <fieldset>
-                                    
+                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                     <p><input name="name" type="text" class="field" id="name" maxlength="50" placeholder="NAME"></p>
                                 
                                     <p><input name="email" type="email" class="field1" id="email" placeholder="EMAIL"></p>
@@ -221,7 +221,7 @@ http://www.templatemo.com/tm-471-zigzag
                                     <p><textarea name="message" id="message" placeholder="MESSAGE"></textarea> </p>
                                 
                                     <p><input name="submit" type="submit" class="Button" id="submit" value="send"></p>
-                                
+                                    
                                 </fieldset>
                             </form>
                         
