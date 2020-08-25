@@ -2,8 +2,8 @@
 <%- include("../partials/navigation.ejs") -%>
 
 
-
 <body>
+	
 	<div class="container">
 			<h1 style="text-align:center; padding-top:120px;padding-bottom:30px;">All Courses</h1>
 			<div class="row col-lg-12">
@@ -28,9 +28,9 @@
 <!--======================= I Removed the course name and all other as they were not looking good =======================-->
 								<h3><%= course.name %></h3>
 								
-								<h6 class="text-muted"><%= course.courseCode %></h6>
+								<h3>Course Code: <%= course.courseCode %></h3>
 								
-								<h6 class="text-muted"><%= course.instructor.name %></h6>
+								<h3 class="text-muted">Instructor: <%= course.instructor.name %></h3>
 						</p>
 
 						<% if(hasBuiltProfile && isVerified) { %>

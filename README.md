@@ -30,6 +30,7 @@ List of the Packages used.
 > - Csurf
 > - Flash
 > - Multer
+> - Imagemin
 > - Bcrytjs
 > - HTML5
 > - CSS3

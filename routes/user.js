@@ -33,9 +33,9 @@ router.post("/build-profile", isAuth, isVerified, hasNotBuiltProfile, userContro
 
 router.get("/edit-profile/:userId", isAuth, hasBuiltProfile, isVerified, userControllers.getEditProfile);
 
-router.post("/edit-profile", isAuth, userControllers.postEditProfile);
+router.post("/edit-profile", isAuth, hasBuiltProfile, isVerified, userControllers.postEditProfile);
 
-router.get("/my-profile", isAuth, hasBuiltProfile, isVerified, userControllers.getProfile);
+router.get("/my-profile", isAuth, hasBuiltProfile, userControllers.getProfile);
 
 router.get("/get-courses", isAuth, userControllers.getCourses);
 
