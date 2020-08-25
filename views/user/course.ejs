@@ -7,24 +7,20 @@
 	<div class="container">
 		
 		<div class="col-lg-12 col-xl-12 text-center"  style="padding-top:120px;">
-                <h1><%= course.name %></h1>
-                <h3><%= instructor.name %></h3>
+                <h1><b><%= course.name %></h1>
+                <h3><%= instructor.name %></b></h3>
 		</div>
-		
-        <div class="col-lg-12">
-            <h2>The Posts<br><br></h2>
-        </div>
-        
+		        
         <div class="row col-lg-12 col-xl-12">
         
         <% posts.map(post => { %>
-            
-            <div class="col-xl-5 col-lg-5 col-md-12 col-12 card shadow" style="margin-right: 8%;margin-right: 8%; margin-bottom: 5%; margin-top: 5%;">
+         <div class="col-xl-12 col-lg-12 col-md-12 col-12 ">   
+            <div class="card shadow" style="margin-right: 2%;margin-right: 2%; margin-bottom: 5%; margin-top: 5%; padding-left:5%; padding-right:5% ">
                 <div class="card-content">
-                <h3>
+                <h3 class="text-center">
                     <b><br><%= post.title %></b>
                 </h3>
-                <img src="/<%= post.document %>" alt="<%= post.title %>" style="width: 70%;margin-left: auto; margin-right: auto; padding-bottom: 10px;">
+                <img src="/<%= post.document %>" alt="<%= post.title %>" style="width: 90%;margin-left: 5%; margin-right: 5%; padding-bottom: 10px; padding-top:10px">
                 <p><%= post.description %></p>
                 
                 <% post.comments.map(comment => { %>
@@ -48,7 +44,8 @@
                 </form>
 
                 </div>
-            </div>    
+            </div>
+         </div>    
         <% }); %>
 
         </div>
@@ -56,8 +53,10 @@
         <div class="col-xl-12 col-lg-12 card shadow" style="padding-top:10px; padding-bottom:20px;margin-top: 10px; margin-bottom: 40px;">
             <% if(isAdmin) { %>
                 <h2>Add a new Post(upload only .jpg .jpeg. or .png file)</h2>
-              <div class="col-xl-3 col-lg-4">
-                <form action="/admin/course/add-post" method="POST" enctype="multipart/form-data">
+            <div class="row">    
+                <div class="col-xl-6 col-lg-6">
+                
+                    <form action="/admin/course/add-post" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                 
                         <input type="text" name="title" id="title" class="form-control" placeholder="Title of the Post" required>
@@ -66,18 +65,22 @@
  
                         <input type="file" name="document" id="document" class="form-control" required>
                     </div>
+                </div>      
+                <div class="col-xl-6 col-lg-6">
                     <div class="form-group">
-                        <textarea name="description" id="description" cols="30" rows="10" placeholder="Description" required></textarea>
+                        <textarea name="description" id="description" cols="30" rows="4" placeholder="Description required" class="form-control" ></textarea>
                     </div>
                     <div class="form-group">   
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <input type="hidden" name="courseId" value="<%= course._id %>">
                     </div>
-                    
+                </div>
+                <div class="col-xl-12 col-lg-12">    
                     <button type="submit" style="background:#2B4BEA; text-color:#ffffff" class="btn btn-block login-btn mb-4">Submit</button>
-                
+                </div>
                 </form>
-              </div>
+                </div>
+            </div>
             <% } %>
         </div>
     </div>
