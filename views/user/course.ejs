@@ -22,6 +22,7 @@
                     <b><br><%= post.title %></b>
                 </h3>
                 <img src="/<%= post.document %>" alt="<%= post.title %>" style="width: 70%;margin-left: auto; margin-right: auto; padding-bottom: 10px;">
+                <p><%= post.description %></p>
                 
                 <% post.comments.map(comment => { %>
                         <h6> + <%= comment.comment %><br><h7 class="text-muted">By <%= comment.user.name%></h7></h6>
@@ -53,11 +54,14 @@
                 <form action="/admin/course/add-post" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                 
-                        <input type="text" name="title" id="title" class="form-control" placeholder="Title of the Post">
+                        <input type="text" name="title" id="title" class="form-control" placeholder="Title of the Post" required>
                     </div>
                     <div class="form-group">
  
-                        <input type="file" name="document" id="document" class="form-control">
+                        <input type="file" name="document" id="document" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="description" id="description" cols="30" rows="10" placeholder="Description" required></textarea>
                     </div>
                     <div class="form-group">   
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">

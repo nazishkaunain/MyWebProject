@@ -150,10 +150,10 @@ exports.postEditCourse = (req, res, next) => {
     const updatedInstructor = req.body.instructor;
 
     Course.findByIdAndUpdate(courseId, {
-            name: updatedName,
-            courseCode: updatedCourseCode,
-            instructor: updatedInstructor,
-        })
+        name: updatedName,
+        courseCode: updatedCourseCode,
+        instructor: updatedInstructor,
+    })
         .then((course) => {    //it gives the details of the course without updating
             console.log("The new course details are: ", course);   //it does not give the new details
             if (course.instructor.toString() !== updatedInstructor.toString()) {
@@ -256,15 +256,12 @@ exports.postAddPost = (req, res, next) => {
     const courseId = req.body.courseId;
     const document = req.file;
     const title = req.body.title;
+    const description = req.body.description;
     const admin = req.user._id;
 
     console.log(document);
 
     let documentUrl;
-
-    //const documentUrl = document.path;
-
-    console.log("filename: ", document.filename);
 
     (async () => {
         const files = await imagemin(['images/' + document.filename], {
@@ -275,45 +272,44 @@ exports.postAddPost = (req, res, next) => {
                     quality: [0.5, 0.6]
                 })
             ]
-        });
-
-        //documentUrl = files[0].destinationPath;
-        fileHelper.deleteFile(document.path); //deleting the original uploaded image
-     
+        });   
+        console.log("reduced the file");
         console.log(files);
         //=> [{data: <Buffer 89 50 4e …>, destinationPath: 'build/images/foo.jpg'}, …]
+
+        documentUrl = files[0].destinationPath;
+        fileHelper.deleteFile(document.path); //deleting the original uploaded image
+
+        const post = new Post({
+            title: title,
+            description: description,
+            document: documentUrl,
+            course: courseId,
+            admin: admin,
+            comments: []
+        });
+
+        let postId;
+
+        post.save()
+            .then((post) => {
+                console.log(post);
+                postId = post._id;
+                return Course.findById(courseId);
+            })
+            .then(course => {
+                course.posts.push(postId);
+                return course.save();
+            })
+            .then(() => {
+                console.log("Successfully added the document");
+                return res.redirect("/courses/" + courseId);
+            })
+            .catch(err => {
+                console.log(err);
+            });
     })();
 
-    documentUrl = "compressedImages\\" + document.filename;
 
-    console.log(documentUrl);
-
-    const post = new Post({
-        title: title,
-        document: documentUrl,
-        course: courseId,
-        admin: admin,
-        comments: []
-    });
-    
-    let postId;
-    
-    post.save()
-        .then((post) => {
-            console.log(post);
-            postId = post._id;
-            return Course.findById(courseId);
-        })
-        .then(course => {
-            course.posts.push(postId);
-            return course.save();
-        })
-        .then(() => {
-            console.log("Successfully added the document");
-            return res.redirect("/courses/" + courseId);
-        })
-        .catch(err => {
-            console.log(err);
-        });
 };
 

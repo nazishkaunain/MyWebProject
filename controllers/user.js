@@ -56,53 +56,79 @@ exports.postBuildProfile = (req, res, next) => {
     //const profilePicUrl = profilePic.path;
     let profilePicUrl;
 
-    console.log("filename: ", profilePic.filename);
-
-    (async () => {
-        const files = await imagemin(['images/' + profilePic.filename], {
-            destination: 'compressedImages',
-            plugins: [
-                imageminJpegtran(),
-                imageminPngquant({
-                    quality: [0.5, 0.6]
-                })
-            ]
-        });
-
-        //documentUrl = files[0].destinationPath;
-        fileHelper.deleteFile(profilePic.path); //deleting the original uploaded image
-
-        console.log(files);
-        //=> [{data: <Buffer 89 50 4e …>, destinationPath: 'build/images/foo.jpg'}, …]
-    })();
-
-    profilePicUrl = "compressedImages\\" + profilePic.filename;
-
-    User.findById(req.user._id)
-        .then(user => {
-            user.degree = degree;
-            user.department = department;
-            user.yearOfGraduation = yearOfGraduation;
-            user.birthday = birthday;
-            user.gender = gender;
-            user.name = name;
-            user.hasBuiltProfile = true;
-            user.profilePic = profilePicUrl;
-
-            return user.save();
-        })
-        .then(result => {
-            console.log("Successfully completed profile");
-            req.session.hasBuiltProfile = true;
-            return req.session.save((err) => {
-                if (!err) {
-                    return res.redirect("/index");
-                } else console.log(err);
+    if (profilePic) {
+        (async () => {
+            const files = await imagemin(['images/' + profilePic.filename], {
+                destination: 'compressedImages',
+                plugins: [
+                    imageminJpegtran(),
+                    imageminPngquant({
+                        quality: [0.5, 0.6]
+                    })
+                ]
             });
-        })
-        .catch(err => {
-            console.log(err);
-        });
+
+            console.log(files);
+            //=> [{data: <Buffer 89 50 4e …>, destinationPath: 'build/images/foo.jpg'}, …]
+            profilePicUrl = files[0].destinationPath;
+            fileHelper.deleteFile(profilePic.path); //deleting the original uploaded image
+
+            User.findById(req.user._id)
+                .then(user => {
+                    user.degree = degree;
+                    user.department = department;
+                    user.yearOfGraduation = yearOfGraduation;
+                    user.birthday = birthday;
+                    user.gender = gender;
+                    user.name = name;
+                    user.hasBuiltProfile = true;
+                    user.profilePic = profilePicUrl;
+
+                    return user.save();
+                })
+                .then(result => {
+                    console.log("Successfully completed profile");
+                    req.session.hasBuiltProfile = true;
+                    return req.session.save((err) => {
+                        if (!err) {
+                            return res.redirect("/index");
+                        } else console.log(err);
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+
+        })();
+    } else {
+        User.findById(req.user._id)
+            .then(user => {
+                user.degree = degree;
+                user.department = department;
+                user.yearOfGraduation = yearOfGraduation;
+                user.birthday = birthday;
+                user.gender = gender;
+                user.name = name;
+                user.hasBuiltProfile = true;
+
+                return user.save();
+            })
+            .then(result => {
+                console.log("Successfully completed profile");
+                req.session.hasBuiltProfile = true;
+                return req.session.save((err) => {
+                    if (!err) {
+                        return res.redirect("/index");
+                    } else console.log(err);
+                });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+
+
 
 };
 
@@ -164,45 +190,76 @@ exports.postEditProfile = (req, res, next) => {
             });
 
             //documentUrl = files[0].destinationPath;
-            fileHelper.deleteFile(updatedProfilePic.path); //deleting the original uploaded image
 
             console.log(files);
             //=> [{data: <Buffer 89 50 4e …>, destinationPath: 'build/images/foo.jpg'}, …]
+
+            updatedProfilePicUrl = files[0].destinationPath;
+            fileHelper.deleteFile(updatedProfilePic.path); //deleting the original uploaded image
+
+            User.findById(req.user._id)
+                .then(user => {
+                    user.degree = updatedDegree;
+                    user.department = updatedDepartment;
+                    user.yearOfGraduation = updatedYearOfGraduation;
+                    user.birthday = updatedBirthday;
+                    user.gender = updatedGender;
+                    user.name = updatedName;
+
+
+                    if (user.profilePic) {
+                        fileHelper.deleteFile(user.profilePic);
+                    }
+                    user.profilePic = updatedProfilePicUrl;
+
+
+                    return user.save();
+                })
+                .then(result => {
+                    console.log("Successfully updated profile");
+
+                    return req.session.save((err) => {
+                        if (!err) {
+                            return res.redirect("/index");
+                        } else console.log(err);
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+
+
         })();
 
-        updatedProfilePicUrl = "compressedImages\\" + updatedProfilePic.filename;
+
+    }
+    else {
+        User.findById(req.user._id)
+            .then(user => {
+                user.degree = updatedDegree;
+                user.department = updatedDepartment;
+                user.yearOfGraduation = updatedYearOfGraduation;
+                user.birthday = updatedBirthday;
+                user.gender = updatedGender;
+                user.name = updatedName;
+
+                return user.save();
+            })
+            .then(result => {
+                console.log("Successfully updated profile");
+
+                return req.session.save((err) => {
+                    if (!err) {
+                        return res.redirect("/index");
+                    } else console.log(err);
+                });
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 
-    User.findById(req.user._id)
-        .then(user => {
-            user.degree = updatedDegree;
-            user.department = updatedDepartment;
-            user.yearOfGraduation = updatedYearOfGraduation;
-            user.birthday = updatedBirthday;
-            user.gender = updatedGender;
-            user.name = updatedName;
 
-            if (updatedProfilePic) {
-                if (user.profilePic) {
-                    fileHelper.deleteFile(user.profilePic);
-                } 
-                user.profilePic = updatedProfilePicUrl;        
-            }
-
-            return user.save();
-        })
-        .then(result => {
-            console.log("Successfully updated profile");
-
-            return req.session.save((err) => {
-                if (!err) {
-                    return res.redirect("/index");
-                } else console.log(err);
-            });
-        })
-        .catch(err => {
-            console.log(err);
-        });
 
 };
 
