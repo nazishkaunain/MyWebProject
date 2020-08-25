@@ -52,16 +52,8 @@ exports.postAddCourse = (req, res, next) => {
     const name = req.body.name;
     const courseCode = req.body.courseCode;
 
-    //console.log(req.body.instructor);
-    const instructor = req.body.instructor; //getting the id of the instructor
-    //{...product.productId._doc}
 
-    // console.log(typeof instruct); // it is a string
-    // console.log("instructor", instructor);
-    // console.log("name",instructor.name);
-    console.log(name);
-    console.log(courseCode);
-    console.log(instructor);
+    const instructor = req.body.instructor; //getting the id of the instructor
 
     const course = new Course({
         name: name,
@@ -83,7 +75,7 @@ exports.postAddCourse = (req, res, next) => {
                 });
         })
         .then(() => {
-            return res.redirect("/index");
+            return res.redirect("/get-courses");
         })
         .catch((err) => {
             console.log(err);
@@ -109,7 +101,7 @@ exports.postAddInstructor = (req, res, next) => {
     instructor
         .save()
         .then((result) => {
-            return res.redirect("/index");
+            return res.redirect("/get-instructors");
         })
         .catch((err) => {
             console.log(err);
@@ -180,7 +172,7 @@ exports.postEditCourse = (req, res, next) => {
                     });
             }
             console.log("Course has been updated");
-            return res.redirect("/index");
+            return res.redirect("/get-courses");
         })
         .catch((err) => {
             console.log("error3 happened");
@@ -226,7 +218,7 @@ exports.postEditInstructor = (req, res, next) => {
         .then((instructor) => {
             console.log("the updated instructor: ", instructor);
             console.log("The instructor has been updated");
-            return res.redirect("/index");
+            return res.redirect("/get-instructors");
         })
         .catch(err => {
             console.log("Error happened");
