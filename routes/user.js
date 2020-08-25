@@ -57,4 +57,6 @@ router.post("/", userControllers.postHome);
 
 router.post("/index", userControllers.postIndex);
 
+router.post("/download", userControllers.postDownload);
+
 module.exports = router;

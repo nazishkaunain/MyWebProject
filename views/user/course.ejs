@@ -26,9 +26,17 @@
                     <div class="col-xl-8 col-lg-8">
                         <h4><b><%= post.description %></b></h4>
                     </div>
+                    
                     <div class="col-xl-4 col-lg-4">
-                        <button type="submit" style="background:#2B4BEA; color:#ffffff;" class="btn btn-block login-btn mb-4">Download</button>    
+                        <form action="/download" method="POST">
+                            <input type="hidden" name="courseId"  value="<%= course._id %>">
+                            <input type="hidden" name="document"  value="<%= post.document %>">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <button type="submit" style="background:#2B4BEA; color:#ffffff;" class="btn btn-block login-btn mb-4">Download</button>    
+                        </form>
                     </div>
+                    
+                    
                 </div>
 
                 <% post.comments.map(comment => { %>

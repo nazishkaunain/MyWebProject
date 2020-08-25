@@ -20,6 +20,13 @@ const imagemin = require('imagemin');
 const imageminJpegtran = require('imagemin-jpegtran');
 const imageminPngquant = require('imagemin-pngquant');
 
+exports.postDownload = (req, res, next) => {
+    const document = req.body.document;
+    const courseId = req.body.courseId;
+
+    res.download(document);
+}
+
 exports.getHome = (req, res, next) => {
     res.render("user/home", {
         pageTitle: "Home Page",
